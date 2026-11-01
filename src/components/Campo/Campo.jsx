@@ -1,0 +1,35 @@
+import { useState } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
+import { colors } from "../../styles/theme";
+import styles from "./Campo.styles";
+
+export function Campo({ rotulo, placeholder, valor, aoMudarTexto, senha, erro, tipoTeclado }) {
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.rotulo}>{rotulo}</Text>
+      <View style={styles.caixa}>
+        <TextInput
+          style={styles.entrada}
+          placeholder={placeholder}
+          placeholderTextColor={colors.placeholder}
+          value={valor}
+          onChangeText={aoMudarTexto}
+          secureTextEntry={senha && !mostrarSenha}
+          keyboardType={tipoTeclado}
+        />
+        {senha && (
+          <Pressable onPress={() => setMostrarSenha((atual) => !atual)}>
+            <Text style={styles.acao}>{mostrarSenha ? "Ocultar" : "Mostrar"}</Text>
+          </Pressable>
+        )}
+      </View>
+      {erro && (
+        <View style={styles.dica}>
+          <Text style={styles.dicaTexto}>{erro}</Text>
+        </View>
+      )}
+    </View>
+  );
+}
