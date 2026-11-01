@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { Botao } from "../components/Botao/Botao";
-import { Cabecalho } from "../components/Cabecalho/Cabecalho";
-import { Campo } from "../components/Campo/Campo";
-import global from "../styles/global";
-import styles from "./perfil.styles";
+import { Botao } from "../../components/Botao/Botao";
+import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
+import { Campo } from "../../components/Campo/Campo";
+import global from "../../styles/global";
+import styles from "./Perfil.styles";
 
 export default function Perfil() {
   const [nome, setNome] = useState("");

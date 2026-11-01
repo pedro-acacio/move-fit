@@ -8,33 +8,74 @@ Responder e comentar o código em **português**. Nomes de pastas, arquivos e co
 
 ## Arquitetura de pastas
 
-O projeto usa **Expo Router** (rotas por arquivo). Cada arquivo dentro de `src/app/` é uma tela; `_layout.jsx` define navegação. Componentes e estilos ficam fora de `src/app/`.
+O projeto usa **Expo Router** (rotas por arquivo). **Todo arquivo dentro de `src/app/` vira uma rota**, inclusive arquivos de estilo, então nada além de rotas e `_layout.jsx` pode ficar lá. O conteúdo das telas fica em `src/telas/`.
 
 ```
 src/
-├── app/
-│   ├── index.jsx                # tela inicial
-│   └── ...                      # outras telas/rotas
-├── components/
-│   ├── Entrada/
-│   │   ├── Entrada.jsx          # JSX do componente
-│   │   └── Entrada.styles.js    # estilos só desse componente
+├── app/                          # SÓ rotas (o "mapa" de navegação do protótipo)
+│   ├── _layout.jsx               # pilha principal
+│   ├── index.jsx                 # tela inicial (provisória, vira o Login)
+│   ├── cadastro.jsx
+│   ├── recuperar-senha.jsx
+│   ├── aluno/
+│   │   ├── _layout.jsx           # pilha do aluno (detalhes abrem por cima das abas)
+│   │   ├── (abas)/               # barra inferior: Início, Histórico, Professores, Perfil
+│   │   │   ├── _layout.jsx
+│   │   │   ├── index.jsx         # Home
+│   │   │   ├── historico.jsx
+│   │   │   ├── professores.jsx
+│   │   │   └── perfil.jsx
+│   │   ├── treino/[id].jsx       # Detalhes do treino
+│   │   ├── exercicio/[id].jsx    # Detalhes do exercício
+│   │   ├── chat/[id].jsx         # Chat com professor
+│   │   └── assistente.jsx        # Assistente IA
+│   └── professor/
+│       ├── _layout.jsx
+│       ├── (abas)/               # barra inferior: Início, Treinos, Exercícios, Alunos, Perfil
+│       │   ├── _layout.jsx
+│       │   ├── index.jsx         # Dashboard
+│       │   ├── treinos.jsx
+│       │   ├── exercicios.jsx
+│       │   ├── alunos.jsx
+│       │   └── perfil.jsx
+│       ├── treino/cadastro.jsx               # novo ou editar
+│       ├── treino/selecionar-exercicios.jsx
+│       ├── exercicio/cadastro.jsx            # novo ou editar
+│       ├── aluno/[id].jsx                    # Detalhes do aluno
+│       └── chat/[id].jsx                     # Chat com aluno
+├── telas/                        # conteúdo de cada tela
+│   └── Cadastro/
+│       ├── Cadastro.jsx
+│       └── Cadastro.styles.js
+├── components/                   # peças reutilizáveis
 │   ├── Botao/
-│   │   ├── Botao.jsx
-│   │   └── Botao.styles.js
+│   │   ├── Botao.jsx             # JSX do componente
+│   │   └── Botao.styles.js       # estilos só desse componente
 │   └── ...
+├── services/                     # acesso ao Firebase e ao Gemini (criar quando for usar)
+├── context/                      # estado compartilhado, ex.: usuário logado (criar quando for usar)
 └── styles/
-    ├── global.js                # espaçamentos, fontes, containers base
-    └── theme.js                 # somente as cores
+    ├── global.js                 # espaçamentos, fontes, containers base
+    └── theme.js                  # somente as cores
 ```
 
+Os parênteses em `(abas)` criam um grupo: ele organiza as pastas mas não aparece no endereço. Assim a Home do aluno é `/aluno` e o Dashboard é `/professor`.
+
+## Como fazer uma tela
+1. Criar a pasta da tela em `src/telas/` com os dois arquivos (`Nome.jsx` e `Nome.styles.js`).
+2. Trocar o conteúdo da rota correspondente em `src/app/` (hoje ela mostra `EmConstrucao`) por uma linha:
+   ```js
+   export { default } from "../../telas/Nome/Nome"; // ajustar os ../ conforme a pasta
+   ```
+3. Navegar com `router.push("/aluno/treino/123")`; na tela, ler o id com `useLocalSearchParams()`.
+
 ## Regras de organização
-- **Trabalhar com componentes:** sempre que um trecho de tela puder virar componente, separar. O objetivo é manter as telas em `src/app/` curtas.
-- Telas em `src/app/` ficam enxutas: só montam a tela chamando componentes.
-- **Uma pasta por componente**, com o arquivo do componente e o arquivo de estilo lado a lado.
-- Pastas e componentes em **PascalCase** (`Entrada`, não `entrada`).
-- Extensão **`.jsx`** em todo arquivo com JSX (componentes, telas em `src/app/`); **`.js`** nos arquivos sem JSX (estilos, `theme.js`, `global.js`).
-- Se o projeto crescer, criar `src/app/` com subpastas por rota (já é o padrão do Expo Router) e deixar `components/` só para peças reutilizáveis.
+- **Trabalhar com componentes:** sempre que um trecho de tela puder virar componente, separar. O objetivo é manter as telas curtas.
+- Rotas em `src/app/` só apontam para a tela em `src/telas/` (ou são `_layout.jsx`).
+- **Uma pasta por tela e uma pasta por componente**, com o arquivo `.jsx` e o arquivo de estilo lado a lado.
+- Pastas, telas e componentes em **PascalCase** (`Entrada`, não `entrada`). Arquivos de rota em minúsculo com hífen (`recuperar-senha.jsx`), porque viram o endereço.
+- Extensão **`.jsx`** em todo arquivo com JSX (componentes, telas, rotas); **`.js`** nos arquivos sem JSX (estilos, `theme.js`, `global.js`, services).
+- Chamadas ao Firebase e ao Gemini ficam em `src/services/`, nunca direto na tela.
 
 ## Regras de estilo
 - Não usar CSS nem `.module.css`. Usar `StyleSheet.create()` do React Native.

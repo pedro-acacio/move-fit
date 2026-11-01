@@ -1,18 +1,20 @@
 import { StyleSheet } from "react-native";
-import { colors } from "../styles/theme";
+import { colors } from "../../styles/theme";
 
 export default StyleSheet.create({
-  tela: {
+  centro: {
     flex: 1,
-    backgroundColor: colors.fundo,
     alignItems: "center",
     justifyContent: "center",
-    gap: 24,
-    paddingHorizontal: 20,
+    gap: 8,
   },
   titulo: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: "700",
     color: colors.texto,
+  },
+  aviso: {
+    fontSize: 16,
+    color: colors.textoMuted,
   },
 });

@@ -1,0 +1,5 @@
+import { EmConstrucao } from "../../../components/EmConstrucao/EmConstrucao";
+
+export default function Alunos() {
+  return <EmConstrucao titulo="Alunos" />;
+}
