@@ -9,6 +9,7 @@ export default function Inicio() {
   return (
     <View style={styles.tela}>
       <Text style={styles.titulo}>MoveFit</Text>
+      <Botao texto="Entrar" onPress={() => router.push("/login")} />
       <Botao texto="Criar conta" onPress={() => router.push("/cadastro")} />
       <Botao texto="Área do aluno (teste)" onPress={() => router.push("/aluno")} />
       <Botao texto="Área do professor (teste)" onPress={() => router.push("/professor")} />
