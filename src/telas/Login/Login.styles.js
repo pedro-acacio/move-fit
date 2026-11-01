@@ -3,25 +3,40 @@ import { colors } from "../../styles/theme";
 
 export default StyleSheet.create({
   conteudo: {
-    paddingBottom: 40,
+    flexGrow: 1,
+    justifyContent: "center",
+    paddingVertical: 40,
   },
-  titulo: {
-    fontSize: 24,
+  topo: {
+    alignItems: "center",
+    marginBottom: 32,
+  },
+  marca: {
+    fontSize: 32,
     fontWeight: "700",
     color: colors.texto,
-    marginTop: 8,
   },
-  subtitulo: {
-    fontSize: 14,
+  slogan: {
+    fontSize: 15,
     color: colors.textoMuted,
     marginTop: 6,
+    textAlign: "center",
+  },
+  esqueceu: {
+    alignSelf: "flex-end",
     marginBottom: 24,
   },
   link: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: "600",
     color: colors.primaria,
-    textAlign: "center",
-    marginTop: 20,
+  },
+  cadastro: {
+    marginTop: 24,
+    alignItems: "center",
+  },
+  textoCadastro: {
+    fontSize: 15,
+    color: colors.textoMuted,
   },
 });
