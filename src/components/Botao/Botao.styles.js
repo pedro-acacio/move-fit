@@ -3,6 +3,7 @@ import { colors } from "../../styles/theme";
 
 export default StyleSheet.create({
   botao: {
+    width: "100%",
     backgroundColor: colors.primaria,
     borderRadius: 14,
     paddingVertical: 16,

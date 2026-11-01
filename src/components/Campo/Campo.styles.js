@@ -3,6 +3,7 @@ import { colors } from "../../styles/theme";
 
 export default StyleSheet.create({
   container: {
+    width: "100%",
     marginBottom: 16,
   },
   rotulo: {
