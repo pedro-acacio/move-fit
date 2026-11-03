@@ -1,5 +1,1 @@
-import { EmConstrucao } from "../../../components/EmConstrucao/EmConstrucao";
-
-export default function SelecionarExercicios() {
-  return <EmConstrucao titulo="Selecionar exercícios" voltar />;
-}
+export { default } from "../../../telas/SelecionarExercicios/SelecionarExercicios";
