@@ -1,0 +1,11 @@
+{
+  "nome": "Antonio",
+  "meta": 4,
+  "concluidosNaSemana": 2,
+  "dica": "Dica do MoveFit: mantenha a hidratação constante durante o treino.",
+  "treinos": [
+    { "id": "a", "nome": "Treino A · Peito e Tríceps", "duracao": 45, "exercicios": 6 },
+    { "id": "b", "nome": "Treino B · Costas e Bíceps", "duracao": 50, "exercicios": 7 },
+    { "id": "c", "nome": "Treino C · Pernas e Ombros", "duracao": 55, "exercicios": 8 }
+  ]
+}
