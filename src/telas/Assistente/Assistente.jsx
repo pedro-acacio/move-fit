@@ -1,27 +1,35 @@
 import { useRef, useState } from "react";
-import { FlatList, KeyboardAvoidingView, Platform, Text } from "react-native";
+import { FlatList, KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BalaoMensagem } from "../../components/BalaoMensagem/BalaoMensagem";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
 import { CaixaMensagem } from "../../components/CaixaMensagem/CaixaMensagem";
+import { ContextoTreino } from "../../components/ContextoTreino/ContextoTreino";
 import { Dica } from "../../components/Dica/Dica";
 import { perguntarGemini } from "../../services/gemini";
 import global from "../../styles/global";
+import dados from "../InicioAluno/dados.json";
 import styles from "./Assistente.styles";
 
-// Primeira mensagem, mostrada antes de o aluno perguntar algo.
-const BOAS_VINDAS = {
-  id: "boas-vindas",
-  autor: "ia",
-  texto: "Oi! Sou a assistente do MoveFit. Posso tirar dúvidas sobre exercícios, montar ideias de treino ou dar dicas de descanso. O que você quer saber?",
-};
+// Aviso fixo exigido pelo RF08.2.
+const AVISO = "As orientações da IA são informativas. Em caso de dor persistente, consulte o professor na academia.";
 
+// Assistente do aluno (RF08): tira dúvidas usando o treino escolhido como contexto (RF08.1).
+// TODO: trocar o dados.json pelos treinos do aluno logado vindos do Firebase.
 export default function Assistente() {
-  const [mensagens, setMensagens] = useState([BOAS_VINDAS]);
+  const [treino, setTreino] = useState(dados.treinos[0]);
+  const [mensagens, setMensagens] = useState([]);
   const [texto, setTexto] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
   const lista = useRef(null);
+
+  // Primeira mensagem: é só visual, não vai para o Gemini.
+  const boasVindas = {
+    id: "boas-vindas",
+    autor: "ia",
+    texto: `Olá! Sou o Assistente MoveFit. Hoje seu treino é ${treino.nome}. Como posso ajudar com a execução dos exercícios?`,
+  };
 
   async function enviar() {
     const pergunta = texto.trim();
@@ -36,9 +44,7 @@ export default function Assistente() {
     setCarregando(true);
 
     try {
-      // A mensagem de boas-vindas é só visual, não vai para o Gemini.
-      const historico = conversa.filter((mensagem) => mensagem.id !== "boas-vindas");
-      const resposta = await perguntarGemini(historico);
+      const resposta = await perguntarGemini(conversa, treino.nome);
       setMensagens((atual) => [...atual, { id: String(Date.now()), autor: "ia", texto: resposta }]);
     } catch (e) {
       setErro(e.message);
@@ -49,7 +55,9 @@ export default function Assistente() {
 
   return (
     <SafeAreaView style={global.tela} edges={["top", "bottom"]}>
-      <Cabecalho titulo="Assistente IA" />
+      <Cabecalho titulo="Assistente MoveFit" />
+
+      <ContextoTreino treinos={dados.treinos} selecionado={treino} aoSelecionar={setTreino} />
 
       <KeyboardAvoidingView
         style={styles.conteudo}
@@ -57,7 +65,7 @@ export default function Assistente() {
       >
         <FlatList
           ref={lista}
-          data={mensagens}
+          data={[boasVindas, ...mensagens]}
           keyExtractor={(mensagem) => mensagem.id}
           renderItem={({ item }) => <BalaoMensagem autor={item.autor} texto={item.texto} />}
           onContentSizeChange={() => lista.current?.scrollToEnd({ animated: true })}
@@ -69,6 +77,10 @@ export default function Assistente() {
             </>
           }
         />
+
+        <View style={styles.aviso}>
+          <Dica texto={AVISO} />
+        </View>
 
         <CaixaMensagem
           valor={texto}

@@ -18,7 +18,8 @@ const INSTRUCAO =
   "Não use markdown (nada de asteriscos ou #), só texto simples.";
 
 // historico: lista de mensagens no formato { autor: "usuario" | "ia", texto: "..." }
-export async function perguntarGemini(historico) {
+// treino: nome do treino usado como contexto das respostas (RF08.1)
+export async function perguntarGemini(historico, treino) {
   if (!CHAVE) {
     throw new Error("Chave do Gemini não configurada. Crie o arquivo .env.local com EXPO_PUBLIC_GEMINI_API_KEY.");
   }
@@ -30,7 +31,7 @@ export async function perguntarGemini(historico) {
       "x-goog-api-key": CHAVE,
     },
     body: JSON.stringify({
-      systemInstruction: { parts: [{ text: INSTRUCAO }] },
+      systemInstruction: { parts: [{ text: `${INSTRUCAO} O treino atual do aluno é: ${treino}.` }] },
       // O Gemini chama o usuário de "user" e a IA de "model".
       contents: historico.map((mensagem) => ({
         role: mensagem.autor === "usuario" ? "user" : "model",

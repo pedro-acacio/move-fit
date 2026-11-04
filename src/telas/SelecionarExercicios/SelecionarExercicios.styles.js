@@ -29,6 +29,9 @@ export default StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 16,
   },
+  acao: {
+    marginBottom: 16,
+  },
   dicaTexto: {
     fontSize: 13,
     color: colors.dica,

@@ -1,5 +1,8 @@
+import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { FlatList, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Botao } from "../../components/Botao/Botao";
 import { CartaoExercicio } from "../../components/CartaoExercicio/CartaoExercicio";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
 import { colors } from "../../styles/theme";
@@ -43,8 +46,26 @@ export default function SelecionarExercicios() {
     }));
   }
 
+  // Volta para o cadastro do treino levando os exercícios marcados.
+  function adicionarAoTreino() {
+    const escolhidos = exercicios
+      .filter((exercicio) => selecionados[exercicio.id])
+      .map((exercicio) => ({
+        id: exercicio.id,
+        nome: exercicio.nome,
+        ...selecionados[exercicio.id],
+      }));
+
+    router.dismissTo({
+      pathname: "/professor/treino/cadastro",
+      params: { exercicios: JSON.stringify(escolhidos) },
+    });
+  }
+
+  const quantidade = Object.keys(selecionados).length;
+
   return (
-    <View style={global.tela}>
+    <SafeAreaView style={global.tela} edges={["top", "bottom"]}>
       <Cabecalho titulo="Selecionar exercícios" />
 
       <TextInput
@@ -80,6 +101,12 @@ export default function SelecionarExercicios() {
           Para cada exercício marcado, o professor informa séries e repetições.
         </Text>
       </View>
-    </View>
+
+      {quantidade > 0 && (
+        <View style={styles.acao}>
+          <Botao texto={`Adicionar ao treino (${quantidade})`} onPress={adicionarAoTreino} />
+        </View>
+      )}
+    </SafeAreaView>
   );
 }

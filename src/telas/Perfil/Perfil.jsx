@@ -1,46 +1,47 @@
-import { useState } from "react";
+import { router } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Botao } from "../../components/Botao/Botao";
-import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
-import { Campo } from "../../components/Campo/Campo";
+import { InfoPerfil } from "../../components/InfoPerfil/InfoPerfil";
 import global from "../../styles/global";
+import dados from "./dados.json";
 import styles from "./Perfil.styles";
 
-export default function Perfil() {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [codigo, setCodigo] = useState("");
+const AVISOS = {
+  aluno: "Informe este código ao professor para vincular a sua conta.",
+  professor: "Informe este código ao aluno, ou digite o dele na aba Alunos, para criar o vínculo.",
+};
+
+// Perfil do aluno e do professor (RF14): a prop "tipo" diz qual dos dois mostrar.
+// TODO: trocar o dados.json pelos dados do usuário logado vindos do Firebase.
+export default function Perfil({ tipo }) {
+  const { nome, email, codigo } = dados[tipo];
+
+  // TODO: encerrar a sessão no Firebase antes de voltar para o login.
+  function sair() {
+    router.replace("/login");
+  }
 
   return (
-    <ScrollView style={global.tela} contentContainerStyle={styles.conteudo}>
-      <Cabecalho titulo="Perfil" />
+    <SafeAreaView style={global.tela} edges={["top"]}>
+      <Text style={styles.titulo}>Perfil</Text>
 
-      <View style={styles.corpo}>
+      <ScrollView contentContainerStyle={styles.conteudo} showsVerticalScrollIndicator={false}>
         <View style={styles.icone}>
           <Text style={styles.iconeTexto}>👤</Text>
         </View>
 
-        <Campo rotulo="Nome" placeholder="João Silva" valor={nome} aoMudarTexto={setNome} />
+        <InfoPerfil rotulo="Nome" valor={nome} />
+        <InfoPerfil rotulo="E-mail" valor={email} />
 
-        <Campo
-          rotulo="E-mail"
-          placeholder="email@exemplo.com"
-          valor={email}
-          aoMudarTexto={setEmail}
-          tipoTeclado="email-address"
-        />
+        <View style={styles.cartaoCodigo}>
+          <Text style={styles.rotuloCodigo}>Seu código</Text>
+          <Text style={styles.codigo}>{codigo}</Text>
+          <Text style={styles.avisoCodigo}>{AVISOS[tipo]}</Text>
+        </View>
 
-        <Campo
-          rotulo="Código"
-          placeholder="0000"
-          valor={codigo}
-          aoMudarTexto={setCodigo}
-          tipoTeclado="numeric"
-          tamanhoMaximo={4}
-        />
-
-        <Botao texto="Salvar" onPress={() => {}} />
-      </View>
-    </ScrollView>
+        <Botao texto="Sair" onPress={sair} />
+      </ScrollView>
+    </SafeAreaView>
   );
 }

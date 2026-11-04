@@ -2,14 +2,15 @@ import { StyleSheet } from "react-native";
 import { colors } from "../../styles/theme";
 
 export default StyleSheet.create({
-  conteudo: {
-    flexGrow: 1,
-    justifyContent: "center",
-    paddingBottom: 40,
+  titulo: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: colors.texto,
+    paddingVertical: 16,
   },
-  corpo: {
-    width: "100%",
+  conteudo: {
     alignItems: "center",
+    paddingBottom: 40,
   },
   icone: {
     width: 96,
@@ -22,5 +23,31 @@ export default StyleSheet.create({
   },
   iconeTexto: {
     fontSize: 40,
+  },
+  cartaoCodigo: {
+    width: "100%",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.borda,
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 24,
+  },
+  rotuloCodigo: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: colors.texto,
+  },
+  codigo: {
+    fontSize: 32,
+    fontWeight: "700",
+    letterSpacing: 6,
+    color: colors.primaria,
+    marginVertical: 8,
+  },
+  avisoCodigo: {
+    fontSize: 14,
+    color: colors.textoMuted,
+    textAlign: "center",
   },
 });

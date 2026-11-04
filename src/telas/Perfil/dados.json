@@ -1,0 +1,4 @@
+{
+  "aluno": { "nome": "Antonio", "email": "antonio@exemplo.com", "codigo": "4821" },
+  "professor": { "nome": "Ricardo Silva", "email": "ricardo@exemplo.com", "codigo": "7305" }
+}
