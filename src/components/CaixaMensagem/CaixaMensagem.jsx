@@ -3,14 +3,14 @@ import { colors } from "../../styles/theme";
 import styles from "./CaixaMensagem.styles";
 
 // Campo de digitar a mensagem + botão de enviar, usado no rodapé do chat.
-export function CaixaMensagem({ valor, aoMudarTexto, aoEnviar, desativado }) {
+export function CaixaMensagem({ valor, aoMudarTexto, aoEnviar, desativado, placeholder = "Pergunte sobre seu treino..." }) {
   const podeEnviar = valor.trim().length > 0 && !desativado;
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.entrada}
-        placeholder="Pergunte sobre seu treino..."
+        placeholder={placeholder}
         placeholderTextColor={colors.placeholder}
         value={valor}
         onChangeText={aoMudarTexto}

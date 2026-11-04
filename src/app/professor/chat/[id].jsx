@@ -1,5 +1,5 @@
-import { EmConstrucao } from "../../../components/EmConstrucao/EmConstrucao";
+import Chat from "../../../telas/Chat/Chat";
 
 export default function ChatComAluno() {
-  return <EmConstrucao titulo="Chat com aluno" voltar />;
+  return <Chat tipo= "professor" />;
 }
