@@ -1,0 +1,9 @@
+{
+  "meusProfessores": [
+    { "id": "1", "nome": "Prof. Ricardo Silva", "status": "vinculado" },
+    { "id": "2", "nome": "Prof. Ana Lima", "status": "pendente" }
+  ],
+  "professoresAcademia": [
+    { "id": "3", "nome": "Prof. Carlos Mendes", "area": "Educação física" }
+  ]
+}
