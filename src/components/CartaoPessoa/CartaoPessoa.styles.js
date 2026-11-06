@@ -11,6 +11,10 @@ export default StyleSheet.create({
     padding: 12,
     marginBottom: 12,
   },
+    semBorda: {
+    borderWidth: 0,
+    paddingHorizontal: 0,
+  },
   foto: {
     width: 44,
     height: 44,

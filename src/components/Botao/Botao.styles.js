@@ -15,4 +15,12 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+  botaoSecundario: {
+    backgroundColor: colors.fundo,
+    borderWidth: 1,
+    borderColor: colors.primaria,
+  },
+  textoSecundario: {
+    color: colors.primaria,
+  },
 });

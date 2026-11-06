@@ -1,0 +1,62 @@
+{
+  "alunos": [
+    {
+      "id": "1",
+      "nome": "Antonio",
+      "email": "antonio@exemplo.com",
+      "status": "ativo",
+      "vinculo": "Vinculado",
+      "concluidosNaSemana": 3,
+      "meta": 4,
+      "treinosAtribuidos": [
+        { "id": "a", "nome": "Treino A · Peito e Tríceps", "exercicios": 8 },
+        { "id": "b", "nome": "Treino B · Costas e Bíceps", "exercicios": 7 }
+      ],
+      "treinosConcluidos": [
+        { "id": "1", "nome": "Treino B", "dia": "Quarta-feira" },
+        { "id": "2", "nome": "Treino A", "dia": "Segunda-feira" },
+        { "id": "3", "nome": "Treino C", "dia": "Sexta-feira passada" }
+      ]
+    },
+    {
+      "id": "2",
+      "nome": "Ana Oliveira",
+      "email": "ana@exemplo.com",
+      "status": "ativo",
+      "vinculo": "Vinculada",
+      "concluidosNaSemana": 2,
+      "meta": 4,
+      "treinosAtribuidos": [
+        { "id": "b", "nome": "Treino B · Costas e Bíceps", "exercicios": 7 }
+      ],
+      "treinosConcluidos": [
+        { "id": "1", "nome": "Treino B", "dia": "Terça-feira" },
+        { "id": "2", "nome": "Treino B", "dia": "Segunda-feira" }
+      ]
+    },
+    {
+      "id": "3",
+      "nome": "Carlos Silva",
+      "email": "carlos@exemplo.com",
+      "status": "ativo",
+      "vinculo": "Vinculado",
+      "concluidosNaSemana": 0,
+      "meta": 3,
+      "treinosAtribuidos": [
+        { "id": "a", "nome": "Treino A · Peito e Tríceps", "exercicios": 8 }
+      ],
+      "treinosConcluidos": []
+    },
+    {
+      "id": "4",
+      "nome": "Marcos Souza",
+      "email": "marcos@exemplo.com",
+      "status": "pendente",
+      "vinculo": "Pendente",
+      "concluidosNaSemana": 0,
+      "meta": 4,
+      "treinosAtribuidos": [],
+      "treinosConcluidos": []
+    }
+  ]
+}
