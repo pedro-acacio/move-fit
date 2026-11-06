@@ -8,7 +8,7 @@ export function Campo({ rotulo, placeholder, valor, aoMudarTexto, senha, erro, t
 
   return (
     <View style={styles.container}>
-      <Text style={styles.rotulo}>{rotulo}</Text>
+      {rotulo && <Text style={styles.rotulo}>{rotulo}</Text>}
       <View style={styles.caixa}>
         <TextInput
           style={styles.entrada}

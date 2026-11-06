@@ -1,5 +1,1 @@
-import { EmConstrucao } from "../../../components/EmConstrucao/EmConstrucao";
-
-export default function Alunos() {
-  return <EmConstrucao titulo="Alunos" />;
-}
+export { default } from "../../../telas/Alunos/Alunos";

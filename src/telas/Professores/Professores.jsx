@@ -16,7 +16,11 @@ export default function Professores() {
     <SafeAreaView style={global.tela} edges={["top"]}>
       <Text style={styles.titulo}>Professores</Text>
 
-      <ScrollView contentContainerStyle={styles.conteudo} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.conteudo}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
         <VincularCodigo
           titulo="Vincular por código"
           descricao="Digite o código de 4 dígitos do professor."
