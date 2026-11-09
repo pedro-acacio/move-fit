@@ -7,4 +7,5 @@ export const colors = {
   borda: "#d9d9e3",
   dica: "#3b5bfd",
   dicaFundo: "#eef1ff",
+  sombra: "rgba(0,0,0,0.4)"
 };
