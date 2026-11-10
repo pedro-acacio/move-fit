@@ -5,9 +5,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Botao } from "../../components/Botao/Botao";
 import { CartaoExercicio } from "../../components/CartaoExercicio/CartaoExercicio";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
+import { descricaoCurta, listarTodosExercicios } from "../../services/exerciciosService";
+import { imagensDoExercicio } from "../../services/midiaExercicio";
 import { colors } from "../../styles/theme";
 import global from "../../styles/global";
-import exercicios from "./exercicios.json";
 import styles from "./SelecionarExercicios.styles";
 
 export default function SelecionarExercicios() {
@@ -15,11 +16,22 @@ export default function SelecionarExercicios() {
   const [selecionados, setSelecionados] = useState({});
   const [expandidos, setExpandidos] = useState([]);
 
+  const exercicios = useMemo(
+    () =>
+      listarTodosExercicios().map((exercicio) => ({
+        ...exercicio,
+        nome: exercicio.nomePt,
+        descricao: descricaoCurta(exercicio),
+        imagens: imagensDoExercicio(exercicio),
+      })),
+    []
+  );
+
   const exerciciosFiltrados = useMemo(() => {
     const termo = pesquisa.trim().toLowerCase();
     if (!termo) return exercicios;
     return exercicios.filter((exercicio) => exercicio.nome.toLowerCase().includes(termo));
-  }, [pesquisa]);
+  }, [pesquisa, exercicios]);
 
   function alternarSelecao(id) {
     setSelecionados((atual) => {

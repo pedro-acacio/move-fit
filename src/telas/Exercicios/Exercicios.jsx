@@ -7,7 +7,7 @@ import { Campo } from "../../components/Campo/Campo";
 import { CartaoComAcoes } from "../../components/CartaoComAcoes/CartaoComAcoes";
 import { ConfirmarExclusao } from "../../components/ConfirmarExclusao/ConfirmarExclusao";
 import global from "../../styles/global";
-import listaInicial from "../SelecionarExercicios/exercicios.json";
+import listaInicial from "./exercicios.json";
 import styles from "./Exercicios.styles";
 
 // Aba Exercícios do professor (RF07): lista, busca, editar e excluir exercícios.

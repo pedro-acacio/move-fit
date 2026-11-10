@@ -20,6 +20,10 @@ export default function Inicio() {
       />
       <Botao texto="Chat do aluno (teste)" onPress={() => router.push("/aluno/chat/1")} />
       <Botao texto="Chat do professor (teste)" onPress={() => router.push("/professor/chat/1")} />
+      <Botao
+        texto="Detalhes do exercício (teste)"
+        onPress={() => router.push("/aluno/exercicio/Barbell_Squat")}
+      />
     </View>
   );
 }

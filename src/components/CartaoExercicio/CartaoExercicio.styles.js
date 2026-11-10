@@ -60,21 +60,6 @@ export default StyleSheet.create({
   previa: {
     marginTop: 12,
   },
-  imagem: {
-    height: 120,
-    borderRadius: 10,
-    backgroundColor: colors.dicaFundo,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  imagemEmoji: {
-    fontSize: 32,
-    marginBottom: 6,
-  },
-  imagemTexto: {
-    fontSize: 13,
-    color: colors.textoMuted,
-  },
   descricao: {
     fontSize: 12,
     color: colors.textoMuted,

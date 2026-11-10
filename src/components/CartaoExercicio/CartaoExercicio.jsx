@@ -1,4 +1,5 @@
 import { Pressable, Text, View } from "react-native";
+import { DemonstracaoExercicio } from "../DemonstracaoExercicio/DemonstracaoExercicio";
 import { SeletorNumero } from "../SeletorNumero/SeletorNumero";
 import styles from "./CartaoExercicio.styles";
 
@@ -35,10 +36,7 @@ export function CartaoExercicio({
 
       {expandido && (
         <View style={styles.previa}>
-          <View style={styles.imagem}>
-            <Text style={styles.imagemEmoji}>🏋️</Text>
-            <Text style={styles.imagemTexto}>Imagem em breve</Text>
-          </View>
+          <DemonstracaoExercicio key={exercicio.id} imagens={exercicio.imagens} textoAlternativo={exercicio.nome} />
           <Text style={styles.descricao}>{exercicio.descricao}</Text>
         </View>
       )}
