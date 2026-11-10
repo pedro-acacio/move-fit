@@ -17,7 +17,7 @@ export default function AbasProfessor() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarActiveTintColor: colors.primaria,
+        tabBarActiveTintColor: colors.primariaProfessor,
         tabBarInactiveTintColor: colors.textoMuted,
       }}
     >

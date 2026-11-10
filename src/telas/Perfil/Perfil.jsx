@@ -5,6 +5,7 @@ import { Botao } from "../../components/Botao/Botao";
 import { InfoPerfil } from "../../components/InfoPerfil/InfoPerfil";
 import global from "../../styles/global";
 import dados from "./dados.json";
+import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./Perfil.styles";
 
 const AVISOS = {
@@ -16,6 +17,7 @@ const AVISOS = {
 // TODO: trocar o dados.json pelos dados do usuário logado vindos do Firebase.
 export default function Perfil({ tipo }) {
   const { nome, email, codigo } = dados[tipo];
+  const cor = useCorDaArea();
 
   // TODO: encerrar a sessão no Firebase antes de voltar para o login.
   function sair() {
@@ -36,11 +38,11 @@ export default function Perfil({ tipo }) {
 
         <View style={styles.cartaoCodigo}>
           <Text style={styles.rotuloCodigo}>Seu código</Text>
-          <Text style={styles.codigo}>{codigo}</Text>
+          <Text style={[styles.codigo, { color: cor }]}>{codigo}</Text>
           <Text style={styles.avisoCodigo}>{AVISOS[tipo]}</Text>
         </View>
 
-        <Botao texto="Sair" onPress={sair} />
+        <Botao texto="Sair" perigo onPress={sair} />
       </ScrollView>
     </SafeAreaView>
   );

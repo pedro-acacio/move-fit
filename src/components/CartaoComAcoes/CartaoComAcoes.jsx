@@ -1,12 +1,16 @@
 import { Pressable, Text, View } from "react-native";
+import { useCorDaArea } from "../../context/CorDaArea";
+import { colors } from "../../styles/theme";
 import styles from "./CartaoComAcoes.styles";
 
 // Cartão com título, descrição curta e os botões Editar e Excluir.
-// Usado na lista de exercícios e pode ser usado na lista de treinos.
+// Usado na lista de exercícios e na de treinos. Excluir fica em vermelho (ação destrutiva).
 
 
 // "aoDuplicar" é opcional: quando vem, aparece o botão Duplicar (lista de treinos).
 export function CartaoComAcoes({titulo, descricao, aoEditar, aoDuplicar, aoExcluir}) {
+    const cor = useCorDaArea();
+
     return(
         <View style = {styles.cartao}>
             <Text style = {styles.titulo}>{titulo}</Text>
@@ -15,16 +19,16 @@ export function CartaoComAcoes({titulo, descricao, aoEditar, aoDuplicar, aoExclu
             </Text>
 
             <View style = {styles.acoes}>
-                <Pressable style = {styles.acao} onPress={aoEditar}>
-                    <Text style ={styles.acaoTexto}>Editar</Text>
+                <Pressable style = {[styles.acao, { borderColor: cor }]} onPress={aoEditar}>
+                    <Text style ={[styles.acaoTexto, { color: cor }]}>Editar</Text>
                 </Pressable>
                 {aoDuplicar && (
-                    <Pressable style = {styles.acao} onPress={aoDuplicar}>
-                        <Text style ={styles.acaoTexto}>Duplicar</Text>
+                    <Pressable style = {[styles.acao, { borderColor: cor }]} onPress={aoDuplicar}>
+                        <Text style ={[styles.acaoTexto, { color: cor }]}>Duplicar</Text>
                     </Pressable>
                 )}
-                <Pressable style = {styles.acao} onPress={aoExcluir}>
-                    <Text style = {styles.acaoTexto}>Excluir</Text>
+                <Pressable style = {[styles.acao, { borderColor: colors.perigo }]} onPress={aoExcluir}>
+                    <Text style = {[styles.acaoTexto, { color: colors.perigo }]}>Excluir</Text>
                 </Pressable>
             </View>
         </View>

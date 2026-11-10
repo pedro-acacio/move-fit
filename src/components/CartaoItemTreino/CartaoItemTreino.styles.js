@@ -26,7 +26,7 @@ export default StyleSheet.create({
   },
   remover: {
     borderWidth: 1,
-    borderColor: colors.primaria,
+    borderColor: colors.perigo,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 6,
@@ -35,6 +35,6 @@ export default StyleSheet.create({
   removerTexto: {
     fontSize: 13,
     fontWeight: "600",
-    color: colors.primaria,
+    color: colors.perigo,
   },
 });

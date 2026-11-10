@@ -1,12 +1,15 @@
 import { Pressable, Text, View } from "react-native";
 import { SeloStatus } from "../SeloStatus/SeloStatus";
+import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./CartaoPessoa.styles";
 
 // Cartão de uma pessoa: foto, nome, detalhe e, à direita, o selo de status ou a seta.
 export function CartaoPessoa({ nome, detalhe, status, textoStatus, seta, semBorda, onPress }) {
+    const cor = useCorDaArea();
+
     return (
         <Pressable style={[styles.cartao, semBorda && styles.semBorda]} onPress={onPress} disabled={!onPress}>
-            <View style={styles.foto}>
+            <View style={[styles.foto, { borderColor: cor }]}>
                 <Text style={styles.fotoTexto}>Foto</Text>
             </View>
 

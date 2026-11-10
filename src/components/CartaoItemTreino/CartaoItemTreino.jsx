@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import styles from "./CartaoItemTreino.styles";
 
-// Exercício dentro do cadastro de treino: nome, séries/repetições e o botão Remover.
+// Exercício dentro do cadastro de treino: nome, séries/repetições e o botão Remover (vermelho).
 export function CartaoItemTreino({ nome, detalhe, aoRemover }) {
   return (
     <View style={styles.cartao}>

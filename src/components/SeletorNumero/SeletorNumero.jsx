@@ -1,7 +1,10 @@
 import { Pressable, Text, View } from "react-native";
+import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./SeletorNumero.styles";
 
 export function SeletorNumero({ rotulo, valor, aoMudar, minimo = 0, maximo = 99 }) {
+  const cor = useCorDaArea();
+
   function diminuir() {
     aoMudar(Math.max(minimo, valor - 1));
   }
@@ -15,13 +18,13 @@ export function SeletorNumero({ rotulo, valor, aoMudar, minimo = 0, maximo = 99 
       <Text style={styles.rotulo}>{rotulo}</Text>
       <View style={styles.caixa}>
         <Pressable style={styles.botao} onPress={diminuir} hitSlop={8}>
-          <Text style={styles.seta}>▼</Text>
+          <Text style={[styles.seta, { color: cor }]}>▼</Text>
         </Pressable>
 
         <Text style={styles.valor}>{valor}</Text>
 
         <Pressable style={styles.botao} onPress={aumentar} hitSlop={8}>
-          <Text style={styles.seta}>▲</Text>
+          <Text style={[styles.seta, { color: cor }]}>▲</Text>
         </Pressable>
       </View>
     </View>

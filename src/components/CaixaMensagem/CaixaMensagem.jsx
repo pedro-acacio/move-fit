@@ -1,9 +1,11 @@
 import { Pressable, Text, TextInput, View } from "react-native";
 import { colors } from "../../styles/theme";
+import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./CaixaMensagem.styles";
 
 // Campo de digitar a mensagem + botão de enviar, usado no rodapé do chat.
 export function CaixaMensagem({ valor, aoMudarTexto, aoEnviar, desativado, placeholder = "Pergunte sobre seu treino..." }) {
+  const cor = useCorDaArea();
   const podeEnviar = valor.trim().length > 0 && !desativado;
 
   return (
@@ -18,7 +20,7 @@ export function CaixaMensagem({ valor, aoMudarTexto, aoEnviar, desativado, place
         maxLength={500}
       />
       <Pressable
-        style={[styles.botao, !podeEnviar && styles.botaoDesativado]}
+        style={[styles.botao, { backgroundColor: cor }, !podeEnviar && styles.botaoDesativado]}
         onPress={aoEnviar}
         disabled={!podeEnviar}
       >

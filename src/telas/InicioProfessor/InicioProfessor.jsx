@@ -6,12 +6,14 @@ import { CartaoMeta } from "../../components/CartaoMeta/CartaoMeta";
 import { CartaoNumero } from "../../components/CartaoNumero/CartaoNumero";
 import global from "../../styles/global";
 import dados from "./dados.json";
+import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./InicioProfessor.styles";
 
 // Dashboard do professor (RF12, RF13): engajamento da turma, totais e constância de cada aluno.
 // TODO: trocar o dados.json pelos alunos vinculados vindos do Firebase.
 export default function InicioProfessor() {
   const { nome, alunos } = dados;
+  const cor = useCorDaArea();
 
   // Totais (RF12). "Pendente" = vínculo ainda não confirmado pelo aluno.
   const total = alunos.length;
@@ -52,7 +54,7 @@ export default function InicioProfessor() {
         <View style={styles.linhaSecao}>
           <Text style={styles.secao}>Constância dos alunos</Text>
           <Pressable onPress={() => router.navigate("/professor/alunos")} hitSlop={12}>
-            <Text style={styles.link}>Ver todos</Text>
+            <Text style={[styles.link, { color: cor }]}>Ver todos</Text>
           </Pressable>
         </View>
 

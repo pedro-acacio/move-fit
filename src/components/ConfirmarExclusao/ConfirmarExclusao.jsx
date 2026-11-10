@@ -13,7 +13,7 @@ export function ConfirmarExclusao({visivel, titulo, aoConfirmar,aoCancelar}){
                     <Text style = {styles.mensagem}>Esta ação não pode ser desfeita.</Text>
 
                     <View style = {styles.botoes}>
-                        <Botao texto = "Excluir" onPress={aoConfirmar}></Botao>
+                        <Botao texto = "Excluir" perigo onPress={aoConfirmar}></Botao>
                         <Botao texto = "Cancelar" secundario onPress={aoCancelar}></Botao>
                     </View>
                 </View>

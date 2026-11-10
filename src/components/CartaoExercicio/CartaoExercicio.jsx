@@ -1,6 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import { DemonstracaoExercicio } from "../DemonstracaoExercicio/DemonstracaoExercicio";
 import { SeletorNumero } from "../SeletorNumero/SeletorNumero";
+import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./CartaoExercicio.styles";
 
 export function CartaoExercicio({
@@ -14,11 +15,17 @@ export function CartaoExercicio({
   aoMudarSeries,
   aoMudarRepeticoes,
 }) {
+  const cor = useCorDaArea();
+
   return (
     <View style={styles.cartao}>
       <View style={styles.linha}>
         <Pressable
-          style={[styles.caixaSelecao, selecionado && styles.caixaSelecaoAtiva]}
+          style={[
+            styles.caixaSelecao,
+            selecionado && styles.caixaSelecaoAtiva,
+            selecionado && { backgroundColor: cor, borderColor: cor },
+          ]}
           onPress={aoAlternarSelecao}
         >
           {selecionado && <Text style={styles.marca}>✓</Text>}

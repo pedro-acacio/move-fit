@@ -1,9 +1,12 @@
 import { Pressable, Text, View } from "react-native";
+import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./SeletorOpcoes.styles";
 
 // Lista de opções em "pílulas" para escolher uma (ex.: o aluno do treino).
 // opcoes = [{ chave: "1", rotulo: "Antonio" }, ...]
 export function SeletorOpcoes({ opcoes, valor, aoMudar }) {
+  const cor = useCorDaArea();
+
   return (
     <View style={styles.container}>
       {opcoes.map((opcao) => {
@@ -11,7 +14,11 @@ export function SeletorOpcoes({ opcoes, valor, aoMudar }) {
         return (
           <Pressable
             key={opcao.chave}
-            style={[styles.opcao, selecionada && styles.opcaoSelecionada]}
+            style={[
+              styles.opcao,
+              selecionada && styles.opcaoSelecionada,
+              selecionada && { backgroundColor: cor, borderColor: cor },
+            ]}
             onPress={() => aoMudar(opcao.chave)}
           >
             <Text style={[styles.texto, selecionada && styles.textoSelecionado]}>

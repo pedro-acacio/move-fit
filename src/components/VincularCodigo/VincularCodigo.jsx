@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import { Botao } from "../Botao/Botao";
 import { Dica } from "../Dica/Dica";
+import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./VincularCodigo.styles";
 
 const posicoes = [0, 1, 2, 3];
@@ -10,6 +11,7 @@ const posicoes = [0, 1, 2, 3];
 export function VincularCodigo({ titulo, descricao }) {
   const [codigo, setCodigo] = useState("");
   const [aviso, setAviso] = useState(null);
+  const cor = useCorDaArea();
 
   function mudarCodigo(texto) {
     setCodigo(texto.replace(/\D/g, ""));
@@ -34,8 +36,8 @@ export function VincularCodigo({ titulo, descricao }) {
 
       <View style={styles.caixas}>
         {posicoes.map((posicao) => (
-          <View key={posicao} style={styles.caixa}>
-            <Text style={[styles.digito, !codigo[posicao] && styles.digitoVazio]}>
+          <View key={posicao} style={[styles.caixa, { borderColor: cor }]}>
+            <Text style={[styles.digito, { color: cor }, !codigo[posicao] && styles.digitoVazio]}>
               {codigo[posicao] || "0"}
             </Text>
           </View>
