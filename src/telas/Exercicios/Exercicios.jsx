@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { FlatList, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,6 +16,21 @@ export default function Exercicios() {
   const [exercicios, setExercicios] = useState(listaInicial);
   const [busca, setBusca] = useState("");
   const [paraExcluir, setParaExcluir] = useState(null);
+  const { salvo } = useLocalSearchParams();
+
+  const [ultimoSalvo, setUltimoSalvo] = useState(null);
+
+  // O Cadastro de exercício volta para cá com o exercício salvo: troca o antigo ou adiciona o novo.
+  // Comparar com o último recebido garante que cada exercício salvo entra uma vez só.
+  if (salvo && salvo !== ultimoSalvo) {
+    const exercicio = JSON.parse(salvo);
+    setUltimoSalvo(salvo);
+    setExercicios(
+      exercicios.some((item) => item.id === exercicio.id)
+        ? exercicios.map((item) => (item.id === exercicio.id ? exercicio : item))
+        : [exercicio, ...exercicios]
+    );
+  }
 
   const termo = busca.trim().toLowerCase();
   const encontrados = exercicios.filter((exercicio) =>
@@ -46,7 +61,7 @@ export default function Exercicios() {
             titulo={item.nome}
             descricao={item.descricao}
             aoEditar={() =>
-              router.push({ pathname: "/professor/exercicio/cadastro", params: { id: item.id } })
+              router.push({ pathname: "/professor/exercicio/cadastro", params: { id: item.id, nome: item.nome, descricao: item.descricao, grupo: item.grupo } })
             }
             aoExcluir={() => setParaExcluir(item)}
           />

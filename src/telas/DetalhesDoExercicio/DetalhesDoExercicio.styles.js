@@ -11,6 +11,33 @@ export default StyleSheet.create({
     color: colors.primaria,
     marginTop: 12,
   },
+  numeros: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 16,
+  },
+  numero: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: colors.borda,
+    borderRadius: 14,
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  numeroRotulo: {
+    fontSize: 14,
+    color: colors.textoMuted,
+  },
+  numeroValor: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: colors.texto,
+    marginTop: 4,
+  },
+  botoes: {
+    gap: 12,
+    marginTop: 24,
+  },
   linhaInfo: {
     flexDirection: "row",
     gap: 16,

@@ -96,7 +96,9 @@ export default function DetalhesAluno() {
           <Botao
             texto="Novo treino para este aluno"
             secundario
-            onPress={() => router.push("/professor/treino/cadastro")}
+            onPress={() =>
+              router.push({ pathname: "/professor/treino/cadastro", params: { alunoId: aluno.id } })
+            }
           />
         </View>
       )}

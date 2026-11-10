@@ -26,6 +26,10 @@ export default StyleSheet.create({
     fontSize: 15,
     color: colors.texto,
   },
+  entradaMultilinha: {
+    minHeight: 120,
+    textAlignVertical: "top",
+  },
   acao: {
     fontSize: 14,
     fontWeight: "600",

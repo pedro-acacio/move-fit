@@ -5,7 +5,8 @@ import styles from "./CartaoComAcoes.styles";
 // Usado na lista de exercícios e pode ser usado na lista de treinos.
 
 
-export function CartaoComAcoes({titulo, descricao, aoEditar, aoExcluir}) {
+// "aoDuplicar" é opcional: quando vem, aparece o botão Duplicar (lista de treinos).
+export function CartaoComAcoes({titulo, descricao, aoEditar, aoDuplicar, aoExcluir}) {
     return(
         <View style = {styles.cartao}>
             <Text style = {styles.titulo}>{titulo}</Text>
@@ -17,6 +18,11 @@ export function CartaoComAcoes({titulo, descricao, aoEditar, aoExcluir}) {
                 <Pressable style = {styles.acao} onPress={aoEditar}>
                     <Text style ={styles.acaoTexto}>Editar</Text>
                 </Pressable>
+                {aoDuplicar && (
+                    <Pressable style = {styles.acao} onPress={aoDuplicar}>
+                        <Text style ={styles.acaoTexto}>Duplicar</Text>
+                    </Pressable>
+                )}
                 <Pressable style = {styles.acao} onPress={aoExcluir}>
                     <Text style = {styles.acaoTexto}>Excluir</Text>
                 </Pressable>

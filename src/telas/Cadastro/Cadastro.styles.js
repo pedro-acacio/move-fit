@@ -29,4 +29,17 @@ export default StyleSheet.create({
     marginTop: 16,
     marginBottom: 24,
   },
+  entrar: {
+    marginTop: 24,
+    alignItems: "center",
+  },
+  textoEntrar: {
+    fontSize: 15,
+    color: colors.textoMuted,
+  },
+  link: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: colors.primaria,
+  },
 });

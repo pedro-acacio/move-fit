@@ -1,5 +1,6 @@
+import { router } from "expo-router";
 import { useState } from "react";
-import { ScrollView, Text } from "react-native";
+import { Pressable, ScrollView, Text } from "react-native";
 import { Botao } from "../../components/Botao/Botao";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
 import { Campo } from "../../components/Campo/Campo";
@@ -13,6 +14,11 @@ export default function Cadastro() {
   const [senha, setSenha] = useState("");
   const [perfil, setPerfil] = useState("aluno");
   const [cref, setCref] = useState("");
+
+  // TODO: validar os campos (RF03.2), criar a conta no Firebase e gerar o código (RF03.1).
+  function cadastrar() {
+    router.replace(perfil === "professor" ? "/professor" : "/aluno");
+  }
 
   return (
     <ScrollView style={global.tela} contentContainerStyle={styles.conteudo}>
@@ -50,7 +56,13 @@ export default function Cadastro() {
         Ao concluir, o app gera o seu código de 4 dígitos para vínculo entre aluno e professor.
       </Text>
 
-      <Botao texto="Cadastrar" onPress={() => {}} />
+      <Botao texto="Cadastrar" onPress={cadastrar} />
+
+      <Pressable style={styles.entrar} onPress={() => router.replace("/login")}>
+        <Text style={styles.textoEntrar}>
+          Já tem uma conta? <Text style={styles.link}>Entrar</Text>
+        </Text>
+      </Pressable>
     </ScrollView>
   );
 }

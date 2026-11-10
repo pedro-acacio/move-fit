@@ -9,10 +9,18 @@ import styles from "./Login.styles";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState(null);
 
-  // TODO: validar os campos e autenticar o usuário com o Firebase.
-  // Se falhar, mostrar "E-mail ou senha incorretos." (prop erro do Campo).
-  function entrar() {}
+  // TODO: autenticar com o Firebase (RF02.2) e descobrir o perfil pelo banco.
+  // Por enquanto, para testar o fluxo: e-mail com "prof" entra como professor, o resto como aluno.
+  function entrar() {
+    if (!email.includes("@") || senha.length === 0) {
+      setErro("E-mail ou senha incorretos.");
+      return;
+    }
+    setErro(null);
+    router.replace(email.toLowerCase().includes("prof") ? "/professor" : "/aluno");
+  }
 
   return (
     <ScrollView style={global.tela} contentContainerStyle={styles.conteudo}>
@@ -35,6 +43,7 @@ export default function Login() {
         valor={senha}
         aoMudarTexto={setSenha}
         senha
+        erro={erro}
       />
 
       <Pressable style={styles.esqueceu} onPress={() => router.push("/recuperar-senha")}>

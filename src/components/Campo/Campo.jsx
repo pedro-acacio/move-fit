@@ -3,7 +3,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import { colors } from "../../styles/theme";
 import styles from "./Campo.styles";
 
-export function Campo({ rotulo, placeholder, valor, aoMudarTexto, senha, erro, tipoTeclado, tamanhoMaximo }) {
+export function Campo({ rotulo, placeholder, valor, aoMudarTexto, senha, erro, tipoTeclado, tamanhoMaximo, multilinha }) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
 
   return (
@@ -11,7 +11,7 @@ export function Campo({ rotulo, placeholder, valor, aoMudarTexto, senha, erro, t
       {rotulo && <Text style={styles.rotulo}>{rotulo}</Text>}
       <View style={styles.caixa}>
         <TextInput
-          style={styles.entrada}
+          style={[styles.entrada, multilinha && styles.entradaMultilinha]}
           placeholder={placeholder}
           placeholderTextColor={colors.placeholder}
           value={valor}
@@ -19,6 +19,7 @@ export function Campo({ rotulo, placeholder, valor, aoMudarTexto, senha, erro, t
           secureTextEntry={senha && !mostrarSenha}
           keyboardType={tipoTeclado}
           maxLength={tamanhoMaximo}
+          multiline={multilinha}
         />
         {senha && (
           <Pressable onPress={() => setMostrarSenha((atual) => !atual)}>

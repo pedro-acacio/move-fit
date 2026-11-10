@@ -1,5 +1,6 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
+import { Botao } from "../../components/Botao/Botao";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
 import { DemonstracaoExercicio } from "../../components/DemonstracaoExercicio/DemonstracaoExercicio";
 import { buscarExercicioPorId } from "../../services/exerciciosService";
@@ -8,7 +9,8 @@ import global from "../../styles/global";
 import styles from "./DetalhesDoExercicio.styles";
 
 export default function DetalhesDoExercicio() {
-  const { id } = useLocalSearchParams();
+  // "series", "repeticoes" e "treino" chegam quando o aluno vem dos Detalhes do treino (RF15.1).
+  const { id, series, repeticoes, treino } = useLocalSearchParams();
   const exercicio = buscarExercicioPorId(id);
 
   if (!exercicio) {
@@ -32,6 +34,19 @@ export default function DetalhesDoExercicio() {
 
       <Text style={styles.grupo}>{exercicio.grupo}</Text>
 
+      {series && (
+        <View style={styles.numeros}>
+          <View style={styles.numero}>
+            <Text style={styles.numeroRotulo}>Séries</Text>
+            <Text style={styles.numeroValor}>{series}</Text>
+          </View>
+          <View style={styles.numero}>
+            <Text style={styles.numeroRotulo}>Repetições</Text>
+            <Text style={styles.numeroValor}>{repeticoes}</Text>
+          </View>
+        </View>
+      )}
+
       <View style={styles.linhaInfo}>
         <Text style={styles.infoTexto}>Equipamento: {exercicio.equipamento}</Text>
         <Text style={styles.infoTexto}>Dificuldade: {exercicio.dificuldade}</Text>
@@ -43,6 +58,14 @@ export default function DetalhesDoExercicio() {
           {indice + 1}. {passo}
         </Text>
       ))}
+
+      <View style={styles.botoes}>
+        <Botao
+          texto="Tirar dúvida com a IA"
+          onPress={() => router.push({ pathname: "/aluno/assistente", params: { treino } })}
+        />
+        {treino && <Botao texto="Voltar ao treino" secundario onPress={() => router.back()} />}
+      </View>
     </ScrollView>
   );
 }

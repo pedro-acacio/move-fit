@@ -1,3 +1,4 @@
+import { useLocalSearchParams } from "expo-router";
 import { useRef, useState } from "react";
 import { FlatList, KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,7 +18,11 @@ const AVISO = "As orientações da IA são informativas. Em caso de dor persiste
 // Assistente do aluno (RF08): tira dúvidas usando o treino escolhido como contexto (RF08.1).
 // TODO: trocar o dados.json pelos treinos do aluno logado vindos do Firebase.
 export default function Assistente() {
-  const [treino, setTreino] = useState(dados.treinos[0]);
+  // Vindo dos Detalhes do treino/exercício, "treino" diz qual treino usar como contexto.
+  const params = useLocalSearchParams();
+  const [treino, setTreino] = useState(
+    dados.treinos.find((item) => item.id === params.treino) ?? dados.treinos[0]
+  );
   const [mensagens, setMensagens] = useState([]);
   const [texto, setTexto] = useState("");
   const [carregando, setCarregando] = useState(false);
