@@ -1,11 +1,10 @@
-import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useUsuarioLogado } from "../../context/UsuarioLogado";
+import { sair } from "../../services/autenticacao";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Botao } from "../../components/Botao/Botao";
 import { InfoPerfil } from "../../components/InfoPerfil/InfoPerfil";
 import { useCorDaArea } from "../../context/CorDaArea";
-import { buscarUsuarioLogado, sair } from "../../services/autenticacao";
 import global from "../../styles/global";
 import styles from "./Perfil.styles";
 
@@ -17,17 +16,8 @@ const AVISOS = {
 // Perfil do aluno e do professor (RF14): mostra os dados de quem está logado.
 // A prop "tipo" diz qual aviso mostrar embaixo do código.
 export default function Perfil({ tipo }) {
-  const [usuario, setUsuario] = useState(null);
+  const { usuario } = useUsuarioLogado();
   const cor = useCorDaArea();
-
-  useEffect(() => {
-    buscarUsuarioLogado().then(setUsuario);
-  }, []);
-
-  async function fazerLogout() {
-    await sair();
-    router.replace("/login");
-  }
 
   return (
     <SafeAreaView style={global.tela} edges={["top"]}>
@@ -48,7 +38,7 @@ export default function Perfil({ tipo }) {
           <Text style={styles.avisoCodigo}>{AVISOS[tipo]}</Text>
         </View>
 
-        <Botao texto="Sair" perigo onPress={fazerLogout} />
+        <Botao texto="Sair" perigo onPress={sair} />
       </ScrollView>
     </SafeAreaView>
   );
