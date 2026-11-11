@@ -3,25 +3,33 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { Botao } from "../../components/Botao/Botao";
 import { Campo } from "../../components/Campo/Campo";
+import { entrar, mensagemDeErro } from "../../services/autenticacao";
 import global from "../../styles/global";
 import styles from "./Login.styles";
 
+// Login (RF02): entra com e-mail e senha no Firebase e leva para a área do perfil da conta.
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState(null);
+  const [carregando, setCarregando] = useState(false);
 
-  // TODO: autenticar com o Firebase (RF02.2) e descobrir o perfil pelo banco.
-  // Por enquanto, para testar o fluxo: e-mail com "prof" entra como professor, o resto como aluno.
-  function entrar() {
-    if (!email.includes("@") || senha.length === 0) {
-      setErro("E-mail ou senha incorretos.");
+  async function fazerLogin() {
+    if (!email.trim() || !senha) {
+      setErro("Preencha o e-mail e a senha.");
       return;
     }
     setErro(null);
-    router.replace(email.toLowerCase().includes("prof") ? "/professor" : "/aluno");
+    setCarregando(true);
+    try {
+      const usuario = await entrar(email.trim(), senha);
+      router.replace(usuario?.perfil === "professor" ? "/professor" : "/aluno");
+    } catch (e) {
+      setErro(mensagemDeErro(e));
+    } finally {
+      setCarregando(false);
+    }
   }
-
   return (
     <ScrollView style={global.tela} contentContainerStyle={styles.conteudo}>
       <View style={styles.topo}>
@@ -50,7 +58,7 @@ export default function Login() {
         <Text style={styles.link}>Esqueceu a senha?</Text>
       </Pressable>
 
-      <Botao texto="Entrar" onPress={entrar} />
+      <Botao texto={carregando ? "Entrando..." : "Entrar"} onPress={carregando ? undefined : fazerLogin} />
 
       <Pressable style={styles.cadastro} onPress={() => router.push("/cadastro")}>
         <Text style={styles.textoCadastro}>

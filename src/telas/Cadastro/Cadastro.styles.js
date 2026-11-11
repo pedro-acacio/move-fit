@@ -29,6 +29,9 @@ export default StyleSheet.create({
     marginTop: 16,
     marginBottom: 24,
   },
+  erro:{
+    marginBottom: 16,
+  },
   entrar: {
     marginTop: 24,
     alignItems: "center",

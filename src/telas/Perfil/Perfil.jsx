@@ -1,11 +1,12 @@
 import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Botao } from "../../components/Botao/Botao";
 import { InfoPerfil } from "../../components/InfoPerfil/InfoPerfil";
-import global from "../../styles/global";
-import dados from "./dados.json";
 import { useCorDaArea } from "../../context/CorDaArea";
+import { buscarUsuarioLogado, sair } from "../../services/autenticacao";
+import global from "../../styles/global";
 import styles from "./Perfil.styles";
 
 const AVISOS = {
@@ -13,14 +14,18 @@ const AVISOS = {
   professor: "Informe este código ao aluno, ou digite o dele na aba Alunos, para criar o vínculo.",
 };
 
-// Perfil do aluno e do professor (RF14): a prop "tipo" diz qual dos dois mostrar.
-// TODO: trocar o dados.json pelos dados do usuário logado vindos do Firebase.
+// Perfil do aluno e do professor (RF14): mostra os dados de quem está logado.
+// A prop "tipo" diz qual aviso mostrar embaixo do código.
 export default function Perfil({ tipo }) {
-  const { nome, email, codigo } = dados[tipo];
+  const [usuario, setUsuario] = useState(null);
   const cor = useCorDaArea();
 
-  // TODO: encerrar a sessão no Firebase antes de voltar para o login.
-  function sair() {
+  useEffect(() => {
+    buscarUsuarioLogado().then(setUsuario);
+  }, []);
+
+  async function fazerLogout() {
+    await sair();
     router.replace("/login");
   }
 
@@ -33,16 +38,17 @@ export default function Perfil({ tipo }) {
           <Text style={styles.iconeTexto}>👤</Text>
         </View>
 
-        <InfoPerfil rotulo="Nome" valor={nome} />
-        <InfoPerfil rotulo="E-mail" valor={email} />
+        <InfoPerfil rotulo="Nome" valor={usuario?.nome ?? "..."} />
+        <InfoPerfil rotulo="E-mail" valor={usuario?.email ?? "..."} />
+        {usuario?.cref && <InfoPerfil rotulo="CREF" valor={usuario.cref} />}
 
         <View style={styles.cartaoCodigo}>
           <Text style={styles.rotuloCodigo}>Seu código</Text>
-          <Text style={[styles.codigo, { color: cor }]}>{codigo}</Text>
+          <Text style={[styles.codigo, { color: cor }]}>{usuario?.codigo ?? "...."}</Text>
           <Text style={styles.avisoCodigo}>{AVISOS[tipo]}</Text>
         </View>
 
-        <Botao texto="Sair" perigo onPress={sair} />
+        <Botao texto="Sair" perigo onPress={fazerLogout} />
       </ScrollView>
     </SafeAreaView>
   );

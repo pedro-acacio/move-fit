@@ -6,6 +6,7 @@ import global from "../../styles/global";
 import styles from "./RecuperarSenha.styles";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { mensagemDeErro, recuperarSenha } from "../../services/autenticacao";
 
 
 export default function RecuperarSenha() {
@@ -14,17 +15,19 @@ export default function RecuperarSenha() {
     const [erro, setErro] = useState(null);
     const [enviado, setEnviado] = useState(false);
 
-    function enviar() {
+    async function enviar() {
         if (!email.includes("@")) {
             setErro("Informe um e-mail válido.");
             return;
         }
 
         setErro(null);
-        // TODO: quando o Firebase estiver pronto, chamar sendPasswordResetEmail aqui (RF02.3)
-
-        setEnviado(true);
-
+        try {
+            await recuperarSenha(email.trim());
+            setEnviado(true);
+        } catch (e) {
+            setErro(mensagemDeErro(e));
+        }
     }
 
     return (
@@ -48,7 +51,7 @@ export default function RecuperarSenha() {
             {enviado && (
                 <View style={styles.sucesso}>
                     <Text style={styles.sucessoTexto}>
-                        Enviamos um e-mail para redefinir sua senha. Verifique também o spam.
+                        Se este e-mail estiver cadastrado, você vai receber um link para criar uma nova senha. Verifique também o spam.
                     </Text>
                 </View>
             )}

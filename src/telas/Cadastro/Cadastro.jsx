@@ -1,28 +1,62 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import { Pressable, ScrollView, Text } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { Botao } from "../../components/Botao/Botao";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
 import { Campo } from "../../components/Campo/Campo";
+import { Dica } from "../../components/Dica/Dica";
 import { SeletorPerfil } from "../../components/SeletorPerfil/SeletorPerfil";
 import { CorDaAreaProvider } from "../../context/CorDaArea";
+import { cadastrar, mensagemDeErro } from "../../services/autenticacao";
 import global from "../../styles/global";
 import { colors } from "../../styles/theme";
 import styles from "./Cadastro.styles";
 
+
+// Formato do CREF: 6 números, hífen, G ou P, barra e a sigla do estado. Ex.: 123456-G/CE
+const FORMATO_CREF = /^\d{6}-[GP]\/[A-Z]{2}$/;
+
+// Cadastro (RF03): cria a conta no Firebase e salva o perfil, com o código de 4 dígitos.
 export default function Cadastro() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [perfil, setPerfil] = useState("aluno");
   const [cref, setCref] = useState("");
+  const [erro, setErro] = useState(null);
+  const [carregando, setCarregando] = useState(false);
 
   // A tela já mostra a cor da área escolhida: laranja para aluno, azul para professor.
   const cor = perfil === "professor" ? colors.primariaProfessor : colors.primaria;
+  const crefFormatado = cref.trim().toUpperCase();
 
-  // TODO: validar os campos (RF03.2), criar a conta no Firebase e gerar o código (RF03.1).
-  function cadastrar() {
-    router.replace(perfil === "professor" ? "/professor" : "/aluno");
+  // Validação dos campos (RF03.2): devolve o problema encontrado ou null se estiver tudo certo.
+  function validar() {
+    if (!nome.trim()) return "Informe o seu nome.";
+    if (!email.includes("@")) return "Informe um e-mail válido.";
+    if (senha.length < 8) return "A senha precisa ter pelo menos 8 caracteres.";
+    if (perfil === "professor" && !FORMATO_CREF.test(crefFormatado)) {
+      return "Informe o CREF no formato 123456-G/CE.";
+    }
+    return null;
+  }
+
+  async function fazerCadastro() {
+    const problema = validar();
+    if (problema) {
+      setErro(problema);
+      return;
+    }
+    setErro(null);
+    setCarregando(true);
+    try {
+      await cadastrar({ nome: nome.trim(), email: email.trim(), senha, perfil, cref: crefFormatado });
+      router.replace(perfil === "professor" ? "/professor" : "/aluno");
+    } catch (e) {
+      setErro(mensagemDeErro(e));
+    } finally {
+      setCarregando(false);
+    }
   }
 
   return (
@@ -55,14 +89,23 @@ export default function Cadastro() {
         <SeletorPerfil valor={perfil} aoMudar={setPerfil} />
 
         {perfil === "professor" && (
-          <Campo rotulo="CREF" placeholder="Ex.: 123456-G/SP" valor={cref} aoMudarTexto={setCref} />
+          <Campo rotulo="CREF" placeholder="Ex.: 123456-G/CE" valor={cref} aoMudarTexto={setCref} />
         )}
 
         <Text style={styles.observacao}>
           Ao concluir, o app gera o seu código de 4 dígitos para vínculo entre aluno e professor.
         </Text>
 
-        <Botao texto="Cadastrar" onPress={cadastrar} />
+        {erro && (
+          <View style={styles.erro}>
+            <Dica texto={erro} />
+          </View>
+        )}
+
+        <Botao
+          texto={carregando ? "Cadastrando..." : "Cadastrar"}
+          onPress={carregando ? undefined : fazerCadastro}
+        />
 
         <Pressable style={styles.entrar} onPress={() => router.replace("/login")}>
           <Text style={styles.textoEntrar}>
