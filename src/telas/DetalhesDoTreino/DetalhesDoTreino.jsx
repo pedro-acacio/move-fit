@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BarraProgresso } from "../../components/BarraProgresso/BarraProgresso";
@@ -8,16 +8,45 @@ import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
 import { CartaoExercicioFeito } from "../../components/CartaoExercicioFeito/CartaoExercicioFeito";
 import { Dica } from "../../components/Dica/Dica";
 import { buscarExercicioPorId } from "../../services/exerciciosService";
+import { buscarTreino } from "../../services/treinosService";
 import global from "../../styles/global";
-import dados from "./dados.json";
 import styles from "./DetalhesDoTreino.styles";
 
 // Detalhes do treino do aluno (RF15, RF16, RF16.1): marca cada exercício e finaliza o treino.
-// TODO: trocar o dados.json pelo treino vindo do Firebase e guardar em cache offline (RNF06).
+// TODO: guardar o treino em cache offline (RNF06) para consultar sem internet.
 export default function DetalhesDoTreino() {
   const { id } = useLocalSearchParams();
-  const treino = dados[id];
+  // undefined = ainda carregando; null = não existe (ou sem conexão).
+  const [treino, setTreino] = useState(undefined);
   const [feitos, setFeitos] = useState([]);
+
+  // Carrega o treino pelo id da rota; "ativo" evita gravar estado depois de sair da tela.
+  useEffect(() => {
+    let ativo = true;
+
+    async function carregar() {
+      try {
+        const resultado = await buscarTreino(id);
+        if (ativo) setTreino(resultado);
+      } catch {
+        if (ativo) setTreino(null);
+      }
+    }
+
+    carregar();
+    return () => {
+      ativo = false;
+    };
+  }, [id]);
+
+  if (treino === undefined) {
+    return (
+      <SafeAreaView style={global.tela} edges={["top", "bottom"]}>
+        <Cabecalho titulo="Treino" />
+        <Text style={styles.vazio}>Carregando...</Text>
+      </SafeAreaView>
+    );
+  }
 
   if (!treino) {
     return (
@@ -55,7 +84,7 @@ export default function DetalhesDoTreino() {
         showsVerticalScrollIndicator={false}
       >
         {subtitulo && <Text style={styles.subtitulo}>{subtitulo}</Text>}
-        <Text style={styles.professor}>Enviado por Prof. {treino.professor}</Text>
+        <Text style={styles.professor}>Enviado por Prof. {treino.professorNome}</Text>
 
         <View style={styles.progresso}>
           <Text style={styles.progressoTexto}>

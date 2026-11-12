@@ -1,22 +1,28 @@
 import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BotaoFlutuante } from "../../components/BotaoFlutuante/BotaoFlutuante";
 import { CartaoMeta } from "../../components/CartaoMeta/CartaoMeta";
 import { CartaoTreino } from "../../components/CartaoTreino/CartaoTreino";
 import { Dica } from "../../components/Dica/Dica";
+import { useUsuarioLogado } from "../../context/UsuarioLogado";
+import { observarTreinosDoAluno } from "../../services/treinosService";
 import global from "../../styles/global";
 import dados from "./dados.json";
 import styles from "./InicioAluno.styles";
 
 // Home do aluno (RF15, RF17): meta semanal, treinos enviados pelo professor e atalho para a IA.
-// TODO: trocar o dados.json pelos dados do aluno logado vindos do Firebase.
+// TODO: os dados de meta e dica ainda vêm do mock; a contagem vem do histórico (RF17, RF18).
 export default function InicioAluno() {
-  const { nome, meta, dica, treinos } = dados;
+  const { meta, dica } = dados;
+  const { usuario } = useUsuarioLogado();
+  const [treinos, setTreinos] = useState([]);
   // "concluido" chega quando o aluno finaliza um treino nos Detalhes do treino (RF16.1).
-  // TODO: com o Firebase, a contagem vem do histórico e não precisa somar aqui.
   const { concluido } = useLocalSearchParams();
   const concluidosNaSemana = dados.concluidosNaSemana + (concluido ? 1 : 0);
+
+  useEffect(() => observarTreinosDoAluno(setTreinos), []);
 
   const faltam = meta - concluidosNaSemana;
   const fraseMeta =
@@ -29,7 +35,7 @@ export default function InicioAluno() {
   return (
     <SafeAreaView style={global.tela} edges={["top"]}>
       <View style={styles.topo}>
-        <Text style={styles.saudacao}>Olá, {nome}</Text>
+        <Text style={styles.saudacao}>Olá, {usuario?.nome}</Text>
         <Pressable style={styles.foto} onPress={() => router.navigate("/aluno/perfil")}>
           <Text style={styles.fotoTexto}>👤</Text>
         </Pressable>
@@ -54,7 +60,7 @@ export default function InicioAluno() {
             <CartaoTreino
               key={treino.id}
               titulo={treino.nome}
-              detalhe={`${treino.duracao} min · ${treino.exercicios} exercícios`}
+              detalhe={`${treino.exercicios.length} exercícios`}
               onPress={() => router.push(`/aluno/treino/${treino.id}`)}
             />
           ))

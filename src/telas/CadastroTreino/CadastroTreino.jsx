@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Botao } from "../../components/Botao/Botao";
@@ -8,14 +8,11 @@ import { Campo } from "../../components/Campo/Campo";
 import { CartaoItemTreino } from "../../components/CartaoItemTreino/CartaoItemTreino";
 import { Dica } from "../../components/Dica/Dica";
 import { SeletorOpcoes } from "../../components/SeletorOpcoes/SeletorOpcoes";
+import { useUsuarioLogado } from "../../context/UsuarioLogado";
+import { observarAlunosDoProfessor } from "../../services/vinculoService";
+import { salvarTreino } from "../../services/treinosService";
 import global from "../../styles/global";
-import alunos from "../Alunos/dados.json";
 import styles from "./CadastroTreino.styles";
-
-// Só alunos já vinculados podem receber treino (RF06.4).
-const alunosVinculados = alunos.alunos
-  .filter((aluno) => aluno.status === "ativo")
-  .map((aluno) => ({ chave: aluno.id, rotulo: aluno.nome }));
 
 // Cadastro de treino (RF06, RF06.2, RF06.4): a mesma tela serve para criar e para editar.
 // Recebe "treino" (editar), "alunoId" (vindo dos Detalhes do aluno)
@@ -30,6 +27,15 @@ export default function CadastroTreino() {
   const [exercicios, setExercicios] = useState(original?.exercicios ?? []);
   const [erro, setErro] = useState(null);
   const [ultimaSelecao, setUltimaSelecao] = useState(null);
+  const [alunosVinculados, setAlunosVinculados] = useState([]);
+  const { usuario } = useUsuarioLogado();
+
+  // Só alunos já vinculados podem receber treino (RF06.4).
+  useEffect(() => {
+    return observarAlunosDoProfessor((alunos) =>
+      setAlunosVinculados(alunos.map((aluno) => ({ chave: aluno.id, rotulo: aluno.nome })))
+    );
+  }, []);
 
   // Junta os exercícios que voltaram de Selecionar exercícios, sem repetir.
   if (params.exercicios && params.exercicios !== ultimaSelecao) {
@@ -45,8 +51,8 @@ export default function CadastroTreino() {
     setExercicios(exercicios.filter((item) => item.id !== id));
   }
 
-  // TODO: salvar o treino no Firebase (RF06.5) e, ao enviar, ligar ao perfil do aluno.
-  function salvar(enviar) {
+  // Salva no Firebase (RF06.5) e volta para a lista, que se atualiza sozinha pelo observador.
+  async function salvar(enviar) {
     if (!nome.trim() || exercicios.length === 0) {
       setErro("Informe o nome e adicione pelo menos um exercício.");
       return;
@@ -56,13 +62,28 @@ export default function CadastroTreino() {
       return;
     }
 
-    const treino = { id: original?.id ?? String(Date.now()), nome: nome.trim(), alunoId, exercicios };
+    // Grava o que está na tela. "Salvar e enviar" só exige que haja aluno escolhido.
+    setErro(null);
+    try {
+      await salvarTreino({
+        id: original?.id,
+        nome: nome.trim(),
+        alunoId,
+        alunoNome:
+          alunosVinculados.find((aluno) => aluno.chave === alunoId)?.rotulo ??
+          original?.alunoNome ??
+          null,
+        exercicios,
+        professorNome: usuario?.nome,
+      });
+    } catch {
+      setErro("Não foi possível salvar o treino. Tente de novo.");
+      return;
+    }
+
     router.dismissTo({
       pathname: "/professor/treinos",
-      params: {
-        salvo: JSON.stringify(treino),
-        aviso: enviar ? "Treino salvo e enviado ao aluno." : "Treino salvo.",
-      },
+      params: { aviso: enviar ? "Treino salvo e enviado ao aluno." : "Treino salvo." },
     });
   }
 

@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FlatList, KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BalaoMensagem } from "../../components/BalaoMensagem/BalaoMensagem";
@@ -8,32 +8,37 @@ import { CaixaMensagem } from "../../components/CaixaMensagem/CaixaMensagem";
 import { ContextoTreino } from "../../components/ContextoTreino/ContextoTreino";
 import { Dica } from "../../components/Dica/Dica";
 import { perguntarGemini } from "../../services/gemini";
+import { observarTreinosDoAluno } from "../../services/treinosService";
 import global from "../../styles/global";
-import dados from "../InicioAluno/dados.json";
 import styles from "./Assistente.styles";
 
 // Aviso fixo exigido pelo RF08.2.
 const AVISO = "As orientações da IA são informativas. Em caso de dor persistente, consulte o professor na academia.";
 
 // Assistente do aluno (RF08): tira dúvidas usando o treino escolhido como contexto (RF08.1).
-// TODO: trocar o dados.json pelos treinos do aluno logado vindos do Firebase.
 export default function Assistente() {
   // Vindo dos Detalhes do treino/exercício, "treino" diz qual treino usar como contexto.
   const params = useLocalSearchParams();
-  const [treino, setTreino] = useState(
-    dados.treinos.find((item) => item.id === params.treino) ?? dados.treinos[0]
-  );
+  const [treinos, setTreinos] = useState([]);
+  const [treinoId, setTreinoId] = useState(params.treino);
   const [mensagens, setMensagens] = useState([]);
   const [texto, setTexto] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
   const lista = useRef(null);
 
+  useEffect(() => observarTreinosDoAluno(setTreinos), []);
+
+  // Sem id na rota (ou id que não existe mais), começa pelo treino mais recente.
+  const treino = treinos.find((item) => item.id === treinoId) ?? treinos[0] ?? null;
+
   // Primeira mensagem: é só visual, não vai para o Gemini.
   const boasVindas = {
     id: "boas-vindas",
     autor: "ia",
-    texto: `Olá! Sou o Assistente MoveFit. Hoje seu treino é ${treino.nome}. Como posso ajudar com a execução dos exercícios?`,
+    texto: treino
+      ? `Olá! Sou o Assistente MoveFit. Hoje seu treino é ${treino.nome}. Como posso ajudar com a execução dos exercícios?`
+      : "Olá! Sou o Assistente MoveFit. Como posso ajudar com a execução dos exercícios?",
   };
 
   async function enviar() {
@@ -49,7 +54,7 @@ export default function Assistente() {
     setCarregando(true);
 
     try {
-      const resposta = await perguntarGemini(conversa, treino.nome);
+      const resposta = await perguntarGemini(conversa, treino?.nome ?? "nenhum treino enviado");
       setMensagens((atual) => [...atual, { id: String(Date.now()), autor: "ia", texto: resposta }]);
     } catch (e) {
       setErro(e.message);
@@ -62,7 +67,9 @@ export default function Assistente() {
     <SafeAreaView style={global.tela} edges={["top", "bottom"]}>
       <Cabecalho titulo="Assistente MoveFit" />
 
-      <ContextoTreino treinos={dados.treinos} selecionado={treino} aoSelecionar={setTreino} />
+      {treino && (
+        <ContextoTreino treinos={treinos} selecionado={treino} aoSelecionar={(novo) => setTreinoId(novo.id)} />
+      )}
 
       <KeyboardAvoidingView
         style={styles.conteudo}
