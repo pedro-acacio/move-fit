@@ -18,6 +18,9 @@ export default StyleSheet.create({
     gap: 12,
     marginTop: 12,
   },
+  anel: {
+    marginBottom: 20,
+  },
   linhaSecao: {
     flexDirection: "row",
     justifyContent: "space-between",

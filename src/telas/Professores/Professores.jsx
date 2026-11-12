@@ -1,16 +1,20 @@
 import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { ScrollView, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CartaoPessoa } from "../../components/CartaoPessoa/CartaoPessoa";
 import { VincularCodigo } from "../../components/VincularCodigo/VincularCodigo";
+import { observarProfessoresDoAluno } from "../../services/vinculoService";
 import global from "../../styles/global";
 import dados from "./dados.json";
 import styles from "./Professores.styles";
 
 // Aba Professores do aluno (RF19): vínculo por código e listas de professores.
-// TODO: trocar o dados.json pelos professores do aluno logado vindos do Firebase.
 export default function Professores() {
-  const { meusProfessores, professoresAcademia } = dados;
+  const [meusProfessores, setMeusProfessores] = useState([]);
+  const { professoresAcademia } = dados;
+
+  useEffect(() => observarProfessoresDoAluno(setMeusProfessores), []);
 
   return (
     <SafeAreaView style={global.tela} edges={["top"]}>
@@ -27,20 +31,19 @@ export default function Professores() {
         />
 
         <Text style={styles.secao}>Meus professores</Text>
-        {meusProfessores.map((professor) => {
-          const vinculado = professor.status === "vinculado";
-
-          return (
+        {meusProfessores.length === 0 ? (
+          <Text style={styles.vazio}>Nenhum professor vinculado ainda.</Text>
+        ) : (
+          meusProfessores.map((professor) => (
             <CartaoPessoa
               key={professor.id}
               nome={professor.nome}
-              detalhe={vinculado ? "Vinculado · toque para conversar" : "Aguardando confirmação"}
-              status={vinculado ? undefined : "pendente"}
-              seta={vinculado}
-              onPress={vinculado ? () => router.push(`/aluno/chat/${professor.id}`) : undefined}
+              detalhe="Vinculado · toque para conversar"
+              seta
+              onPress={() => router.push(`/aluno/chat/${professor.id}`)}
             />
-          );
-        })}
+          ))
+        )}
 
         <Text style={styles.secao}>Professores da academia</Text>
         {professoresAcademia.map((professor) => (

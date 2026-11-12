@@ -3,6 +3,8 @@ import { Text, TextInput, View } from "react-native";
 import { Botao } from "../Botao/Botao";
 import { Dica } from "../Dica/Dica";
 import { useCorDaArea } from "../../context/CorDaArea";
+import { useUsuarioLogado } from "../../context/UsuarioLogado";
+import { vincularPorCodigo } from "../../services/vinculoService";
 import styles from "./VincularCodigo.styles";
 
 const posicoes = [0, 1, 2, 3];
@@ -11,22 +13,31 @@ const posicoes = [0, 1, 2, 3];
 export function VincularCodigo({ titulo, descricao }) {
   const [codigo, setCodigo] = useState("");
   const [aviso, setAviso] = useState(null);
+  const [enviando, setEnviando] = useState(false);
   const cor = useCorDaArea();
+  const { usuario } = useUsuarioLogado();
 
   function mudarCodigo(texto) {
     setCodigo(texto.replace(/\D/g, ""));
     setAviso(null);
   }
 
-  function vincular() {
+  async function vincular() {
     if (codigo.length < 4) {
       setAviso("Digite os 4 dígitos do código.");
       return;
     }
 
-    // TODO: quando o Firebase estiver pronto, validar o código e criar o vínculo (RF11.1).
-    setAviso("Solicitação enviada. Aguardando confirmação.");
-    setCodigo("");
+    setEnviando(true);
+    try {
+      await vincularPorCodigo(codigo, usuario.perfil, usuario.nome);
+      setAviso("Vinculado com sucesso!");
+      setCodigo("");
+    } catch (erro) {
+      setAviso(erro.message);
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (
@@ -52,7 +63,7 @@ export function VincularCodigo({ titulo, descricao }) {
         />
       </View>
 
-      <Botao texto="Vincular" onPress={vincular} />
+      <Botao texto={enviando ? "Vinculando..." : "Vincular"} onPress={vincular} />
       {aviso && (
         <View style={styles.aviso}>
           <Dica texto={aviso} />

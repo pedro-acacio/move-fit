@@ -18,4 +18,8 @@ export default StyleSheet.create({
     marginTop: 24,
     marginBottom: 12,
   },
+  vazio: {
+    fontSize: 15,
+    color: colors.textoMuted,
+  },
 });

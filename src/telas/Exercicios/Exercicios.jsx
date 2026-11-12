@@ -1,36 +1,22 @@
-import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { FlatList, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BotaoFlutuante } from "../../components/BotaoFlutuante/BotaoFlutuante";
 import { Campo } from "../../components/Campo/Campo";
 import { CartaoComAcoes } from "../../components/CartaoComAcoes/CartaoComAcoes";
 import { ConfirmarExclusao } from "../../components/ConfirmarExclusao/ConfirmarExclusao";
+import { excluirExercicio, observarExerciciosDoProfessor } from "../../services/exerciciosProfessorService";
 import global from "../../styles/global";
-import listaInicial from "./exercicios.json";
 import styles from "./Exercicios.styles";
 
 // Aba Exercícios do professor (RF07): lista, busca, editar e excluir exercícios.
-// TODO: trocar o exercicios.json pelos exercícios vindos do Firebase.
 export default function Exercicios() {
-  const [exercicios, setExercicios] = useState(listaInicial);
+  const [exercicios, setExercicios] = useState([]);
   const [busca, setBusca] = useState("");
   const [paraExcluir, setParaExcluir] = useState(null);
-  const { salvo } = useLocalSearchParams();
 
-  const [ultimoSalvo, setUltimoSalvo] = useState(null);
-
-  // O Cadastro de exercício volta para cá com o exercício salvo: troca o antigo ou adiciona o novo.
-  // Comparar com o último recebido garante que cada exercício salvo entra uma vez só.
-  if (salvo && salvo !== ultimoSalvo) {
-    const exercicio = JSON.parse(salvo);
-    setUltimoSalvo(salvo);
-    setExercicios(
-      exercicios.some((item) => item.id === exercicio.id)
-        ? exercicios.map((item) => (item.id === exercicio.id ? exercicio : item))
-        : [exercicio, ...exercicios]
-    );
-  }
+  useEffect(() => observarExerciciosDoProfessor(setExercicios), []);
 
   const termo = busca.trim().toLowerCase();
   const encontrados = exercicios.filter((exercicio) =>
@@ -38,8 +24,7 @@ export default function Exercicios() {
   );
 
   function confirmarExclusao() {
-    // TODO: quando o Firebase estiver pronto, excluir o exercício também no banco.
-    setExercicios(exercicios.filter((exercicio) => exercicio.id !== paraExcluir.id));
+    excluirExercicio(paraExcluir.id);
     setParaExcluir(null);
   }
 

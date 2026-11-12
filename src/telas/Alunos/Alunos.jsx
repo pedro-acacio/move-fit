@@ -1,23 +1,23 @@
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Campo } from "../../components/Campo/Campo";
 import { CartaoPessoa } from "../../components/CartaoPessoa/CartaoPessoa";
 import { VincularCodigo } from "../../components/VincularCodigo/VincularCodigo";
+import { observarAlunosDoProfessor } from "../../services/vinculoService";
 import global from "../../styles/global";
 import styles from "./Alunos.styles";
-import dados from "./dados.json";
 
 // Aba Alunos do professor (RF10): vínculo por código, busca e lista de alunos.
-// TODO: trocar o dados.json pelos alunos do professor logado vindos do Firebase.
 export default function Alunos() {
+  const [alunos, setAlunos] = useState([]);
   const [busca, setBusca] = useState("");
 
+  useEffect(() => observarAlunosDoProfessor(setAlunos), []);
+
   const termo = busca.trim().toLowerCase();
-  const alunosEncontrados = dados.alunos.filter((aluno) =>
-    aluno.nome.toLowerCase().includes(termo)
-  );
+  const alunosEncontrados = alunos.filter((aluno) => aluno.nome.toLowerCase().includes(termo));
 
   return (
     <SafeAreaView style={global.tela} edges={["top"]}>
@@ -44,9 +44,9 @@ export default function Alunos() {
             <CartaoPessoa
               key={aluno.id}
               nome={aluno.nome}
-              detalhe={aluno.detalhe}
-              status={aluno.status}
-              onPress={aluno.status === "ativo" ? () => router.push(`/professor/aluno/${aluno.id}`) : undefined}
+              detalhe="Vinculado"
+              seta
+              onPress={() => router.push(`/professor/aluno/${aluno.id}`)}
             />
           ))
         )}

@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AnelProgresso } from "../../components/AnelProgresso/AnelProgresso";
 import { CartaoAluno } from "../../components/CartaoAluno/CartaoAluno";
 import { CartaoMeta } from "../../components/CartaoMeta/CartaoMeta";
 import { CartaoNumero } from "../../components/CartaoNumero/CartaoNumero";
@@ -24,6 +25,9 @@ export default function InicioProfessor() {
   const engajados = ativos.filter((aluno) => aluno.concluidosNaSemana > 0).length;
   const porcentagem = ativos.length > 0 ? Math.round((engajados / ativos.length) * 100) : 0;
 
+  // Quantos alunos ativos já fizeram o treino enviado hoje.
+  const concluiramHoje = ativos.filter((aluno) => aluno.concluiuHoje).length;
+
   function detalheDoAluno(aluno) {
     if (aluno.status === "pendente") return "Aguardando confirmação do aluno";
     if (aluno.concluidosNaSemana === 0) return "Sem treinos concluídos esta semana";
@@ -37,6 +41,14 @@ export default function InicioProfessor() {
       </View>
 
       <ScrollView contentContainerStyle={styles.conteudo} showsVerticalScrollIndicator={false}>
+        <View style={styles.anel}>
+          <AnelProgresso
+            concluidos={concluiramHoje}
+            total={ativos.length}
+            rotulo="fizeram o treino hoje"
+          />
+        </View>
+
         <CartaoMeta
           titulo="Engajamento da turma"
           concluidos={engajados}

@@ -6,6 +6,7 @@ import { Botao } from "../../components/Botao/Botao";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
 import { Campo } from "../../components/Campo/Campo";
 import { Dica } from "../../components/Dica/Dica";
+import { atualizarExercicio, criarExercicio } from "../../services/exerciciosProfessorService";
 import global from "../../styles/global";
 import styles from "./CadastroExercicio.styles";
 
@@ -18,24 +19,34 @@ export default function CadastroExercicio() {
   const [nome, setNome] = useState(params.nome ?? "");
   const [instrucoes, setInstrucoes] = useState(params.descricao ?? "");
   const [erro, setErro] = useState(null);
+  const [salvando, setSalvando] = useState(false);
 
-  // TODO: salvar o exercício no Firebase (RF07.4).
-  function salvar() {
+  async function salvar() {
     if (!nome.trim() || !instrucoes.trim()) {
       setErro("Preencha o nome e as instruções.");
       return;
     }
 
+    setSalvando(true);
+    setErro(null);
+
     const exercicio = {
-      id: params.id ?? String(Date.now()),
       nome: nome.trim(),
       grupo: params.grupo ?? "",
       descricao: instrucoes.trim(),
     };
-    router.dismissTo({
-      pathname: "/professor/exercicios",
-      params: { salvo: JSON.stringify(exercicio) },
-    });
+
+    try {
+      if (editando) {
+        await atualizarExercicio(params.id, exercicio);
+      } else {
+        await criarExercicio(exercicio);
+      }
+      router.dismissTo("/professor/exercicios");
+    } catch {
+      setErro("Não foi possível salvar. Verifique sua conexão e tente de novo.");
+      setSalvando(false);
+    }
   }
 
   return (
@@ -72,7 +83,7 @@ export default function CadastroExercicio() {
       </ScrollView>
 
       <View style={styles.rodape}>
-        <Botao texto="Salvar exercício" onPress={salvar} />
+        <Botao texto={salvando ? "Salvando..." : "Salvar exercício"} onPress={salvar} />
         <Botao texto="Cancelar" secundario onPress={() => router.back()} />
       </View>
     </SafeAreaView>
