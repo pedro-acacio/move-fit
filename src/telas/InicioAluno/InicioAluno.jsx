@@ -9,20 +9,24 @@ import { Dica } from "../../components/Dica/Dica";
 import { useUsuarioLogado } from "../../context/UsuarioLogado";
 import { observarTreinosDoAluno } from "../../services/treinosService";
 import global from "../../styles/global";
-import dados from "./dados.json";
+import { contarNaSemana, META_SEMANAL, observarHistoricoDoAluno } from "../../services/historicoService";
 import styles from "./InicioAluno.styles";
 
 // Home do aluno (RF15, RF17): meta semanal, treinos enviados pelo professor e atalho para a IA.
-// TODO: os dados de meta e dica ainda vêm do mock; a contagem vem do histórico (RF17, RF18).
+const DICA = "Dica do MoveFit: mantenha a hidratação constante durante o treino.";
+
 export default function InicioAluno() {
-  const { meta, dica } = dados;
   const { usuario } = useUsuarioLogado();
   const [treinos, setTreinos] = useState([]);
+  const [historico, setHistorico] = useState([]);
   // "concluido" chega quando o aluno finaliza um treino nos Detalhes do treino (RF16.1).
   const { concluido } = useLocalSearchParams();
-  const concluidosNaSemana = dados.concluidosNaSemana + (concluido ? 1 : 0);
 
   useEffect(() => observarTreinosDoAluno(setTreinos), []);
+  useEffect(() => observarHistoricoDoAluno(setHistorico), []);
+
+  const meta = META_SEMANAL;
+  const concluidosNaSemana = contarNaSemana(historico);
 
   const faltam = meta - concluidosNaSemana;
   const fraseMeta =
@@ -66,7 +70,7 @@ export default function InicioAluno() {
           ))
         )}
 
-        <Dica texto={dica} />
+        <Dica texto={DICA} />
       </ScrollView>
 
       <BotaoFlutuante texto="Assistente IA" onPress={() => router.push("/aluno/assistente")} />

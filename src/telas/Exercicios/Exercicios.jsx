@@ -23,7 +23,10 @@ export default function Exercicios() {
     exercicio.nome.toLowerCase().includes(termo)
   );
 
+  // O aviso some com animação: um segundo toque em "Excluir" nesse meio-tempo
+  // chegaria aqui com paraExcluir já null. Por isso a conferência antes.
   function confirmarExclusao() {
+    if (!paraExcluir) return;
     excluirExercicio(paraExcluir.id);
     setParaExcluir(null);
   }

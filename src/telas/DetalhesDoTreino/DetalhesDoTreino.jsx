@@ -11,6 +11,7 @@ import { buscarExercicioPorId } from "../../services/exerciciosService";
 import { buscarTreino } from "../../services/treinosService";
 import global from "../../styles/global";
 import styles from "./DetalhesDoTreino.styles";
+import { registrarConclusao } from "../../services/historicoService";
 
 // Detalhes do treino do aluno (RF15, RF16, RF16.1): marca cada exercício e finaliza o treino.
 // TODO: guardar o treino em cache offline (RNF06) para consultar sem internet.
@@ -19,6 +20,8 @@ export default function DetalhesDoTreino() {
   // undefined = ainda carregando; null = não existe (ou sem conexão).
   const [treino, setTreino] = useState(undefined);
   const [feitos, setFeitos] = useState([]);
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState(null);
 
   // Carrega o treino pelo id da rota; "ativo" evita gravar estado depois de sair da tela.
   useEffect(() => {
@@ -68,10 +71,17 @@ export default function DetalhesDoTreino() {
     );
   }
 
-  // Volta para a Home avisando que o treino foi concluído.
-  // TODO: registrar a conclusão no histórico do aluno no Firebase (RF16.1).
-  function concluirTreino() {
-    router.dismissTo({ pathname: "/aluno", params: { concluido: treino.nome } });
+  // Grava a conclusão no histórico (RF16.1) e volta para a Home avisando.
+  async function concluirTreino() {
+    setErro(null);
+    setSalvando(true);
+    try {
+      await registrarConclusao(treino);
+      router.dismissTo({ pathname: "/aluno", params: { concluido: treino.nome } });
+    } catch {
+      setErro("Não foi possível registrar o treino. Verifique a internet e tente de novo.");
+      setSalvando(false);
+    }
   }
 
   return (
@@ -118,7 +128,11 @@ export default function DetalhesDoTreino() {
       </ScrollView>
 
       <View style={styles.rodape}>
-        <Botao texto="Marcar treino concluído" onPress={concluirTreino} />
+        {erro && <Dica texto={erro} />}
+        <Botao
+          texto={salvando ? "Salvando..." : "Marcar treino concluído"}
+          onPress={salvando ? undefined : concluirTreino}
+        />
         <Botao
           texto="Tirar dúvida com a IA"
           secundario

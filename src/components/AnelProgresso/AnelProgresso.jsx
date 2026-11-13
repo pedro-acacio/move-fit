@@ -18,7 +18,8 @@ export function AnelProgresso({ concluidos, total, rotulo }) {
   return (
     <View style={styles.container}>
       <View style={styles.anel}>
-        <Svg width={TAMANHO} height={TAMANHO}>
+        {/* O Svg inteiro gira -90° para o anel começar no topo (igual a um relógio). */}
+        <Svg width={TAMANHO} height={TAMANHO} style={styles.giro}>
           <Circle
             cx={TAMANHO / 2}
             cy={TAMANHO / 2}
@@ -36,8 +37,6 @@ export function AnelProgresso({ concluidos, total, rotulo }) {
             strokeDasharray={`${preenchido}, ${CIRCUNFERENCIA}`}
             strokeLinecap="round"
             fill="none"
-            rotation="-90"
-            origin={`${TAMANHO / 2}, ${TAMANHO / 2}`}
           />
         </Svg>
 

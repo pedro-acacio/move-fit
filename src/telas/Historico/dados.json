@@ -1,9 +1,0 @@
-{
-  "meta": 4,
-  "concluidosNaSemana": 2,
-  "treinosConcluidos": [
-    { "id": "1", "nome": "Treino B · Costas e Bíceps", "dia": "Quarta-feira", "exercicios": 7 },
-    { "id": "2", "nome": "Treino A · Peito e Tríceps", "dia": "Segunda-feira", "exercicios": 6 },
-    { "id": "3", "nome": "Treino C · Pernas e Ombros", "dia": "Sexta-feira passada", "exercicios": 8 }
-  ]
-}

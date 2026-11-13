@@ -10,6 +10,9 @@ export default StyleSheet.create({
     width: 140,
     height: 140,
   },
+  giro: {
+    transform: [{ rotate: "-90deg" }],
+  },
   centro: {
     position: "absolute",
     top: 0,
