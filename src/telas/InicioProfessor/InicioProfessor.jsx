@@ -1,66 +1,81 @@
 import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AnelProgresso } from "../../components/AnelProgresso/AnelProgresso";
 import { CartaoAluno } from "../../components/CartaoAluno/CartaoAluno";
 import { CartaoMeta } from "../../components/CartaoMeta/CartaoMeta";
 import { CartaoNumero } from "../../components/CartaoNumero/CartaoNumero";
-import global from "../../styles/global";
-import dados from "./dados.json";
 import { useCorDaArea } from "../../context/CorDaArea";
+import { useUsuarioLogado } from "../../context/UsuarioLogado";
+import {
+  contarHoje,
+  contarNaSemana,
+  META_SEMANAL,
+  observarHistoricoDoProfessor,
+} from "../../services/historicoService";
+import { observarAlunosDoProfessor } from "../../services/vinculoService";
+import global from "../../styles/global";
 import styles from "./InicioProfessor.styles";
 
 // Dashboard do professor (RF12, RF13): engajamento da turma, totais e constância de cada aluno.
-// TODO: trocar o dados.json pelos alunos vinculados vindos do Firebase.
+// Junta os alunos vinculados com o histórico de treinos concluídos.
 export default function InicioProfessor() {
-  const { nome, alunos } = dados;
+  const { usuario } = useUsuarioLogado();
   const cor = useCorDaArea();
+  const [alunos, setAlunos] = useState([]);
+  const [historico, setHistorico] = useState([]);
 
-  // Totais (RF12). "Pendente" = vínculo ainda não confirmado pelo aluno.
-  const total = alunos.length;
-  const ativos = alunos.filter((aluno) => aluno.status === "ativo");
-  const pendentes = total - ativos.length;
+  useEffect(() => observarAlunosDoProfessor(setAlunos), []);
+  useEffect(() => observarHistoricoDoProfessor(setHistorico), []);
 
-  // Engajamento = quantos alunos ativos concluíram pelo menos 1 treino nesta semana.
-  const engajados = ativos.filter((aluno) => aluno.concluidosNaSemana > 0).length;
-  const porcentagem = ativos.length > 0 ? Math.round((engajados / ativos.length) * 100) : 0;
+  // Para cada aluno, separa o histórico dele e calcula a semana e o dia de hoje.
+  const resumo = alunos.map((aluno) => {
+    const doAluno = historico.filter((item) => item.alunoId === aluno.id);
+    return {
+      ...aluno,
+      concluidosNaSemana: contarNaSemana(doAluno),
+      treinouHoje: contarHoje(doAluno) > 0,
+    };
+  });
 
-  // Quantos alunos ativos já fizeram o treino enviado hoje.
-  const concluiramHoje = ativos.filter((aluno) => aluno.concluiuHoje).length;
+  // Totais (RF12).
+  const total = resumo.length;
+  const treinaramNaSemana = resumo.filter((aluno) => aluno.concluidosNaSemana > 0).length;
+  const semTreinar = total - treinaramNaSemana;
+  const treinaramHoje = resumo.filter((aluno) => aluno.treinouHoje).length;
+
+  // Engajamento = porcentagem de alunos que treinaram pelo menos 1 vez nesta semana.
+  const porcentagem = total > 0 ? Math.round((treinaramNaSemana / total) * 100) : 0;
 
   function detalheDoAluno(aluno) {
-    if (aluno.status === "pendente") return "Aguardando confirmação do aluno";
     if (aluno.concluidosNaSemana === 0) return "Sem treinos concluídos esta semana";
-    return `${aluno.concluidosNaSemana} de ${aluno.meta} treinos esta semana`;
+    return `${aluno.concluidosNaSemana} de ${META_SEMANAL} treinos esta semana`;
   }
 
   return (
     <SafeAreaView style={global.tela} edges={["top"]}>
       <View style={styles.topo}>
-        <Text style={styles.saudacao}>Olá, Prof. {nome}</Text>
+        <Text style={styles.saudacao}>Olá, Prof. {usuario?.nome}</Text>
       </View>
 
       <ScrollView contentContainerStyle={styles.conteudo} showsVerticalScrollIndicator={false}>
         <View style={styles.anel}>
-          <AnelProgresso
-            concluidos={concluiramHoje}
-            total={ativos.length}
-            rotulo="fizeram o treino hoje"
-          />
+          <AnelProgresso concluidos={treinaramHoje} total={total} rotulo="fizeram o treino hoje" />
         </View>
 
         <CartaoMeta
           titulo="Engajamento da turma"
-          concluidos={engajados}
-          meta={ativos.length}
+          concluidos={treinaramNaSemana}
+          meta={total}
           contagem={`${porcentagem}%`}
           frase="Alunos que concluíram treinos nesta semana."
         />
 
         <View style={styles.numeros}>
-          <CartaoNumero valor={total} rotulo="Total de usuários" />
-          <CartaoNumero valor={ativos.length} rotulo="Ativos" />
-          <CartaoNumero valor={pendentes} rotulo="Pendentes" />
+          <CartaoNumero valor={total} rotulo="Alunos" />
+          <CartaoNumero valor={treinaramNaSemana} rotulo="Treinaram na semana" />
+          <CartaoNumero valor={semTreinar} rotulo="Sem treinar" />
         </View>
 
         <View style={styles.linhaSecao}>
@@ -70,17 +85,17 @@ export default function InicioProfessor() {
           </Pressable>
         </View>
 
-        {alunos.length === 0 ? (
+        {resumo.length === 0 ? (
           <Text style={styles.vazio}>
             Nenhum aluno vinculado ainda. Vincule pelo código na aba Alunos.
           </Text>
         ) : (
-          alunos.map((aluno) => (
+          resumo.map((aluno) => (
             <CartaoAluno
               key={aluno.id}
               nome={aluno.nome}
               detalhe={detalheDoAluno(aluno)}
-              status={aluno.status}
+              status="ativo"
               onPress={() => router.push(`/professor/aluno/${aluno.id}`)}
             />
           ))

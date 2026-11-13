@@ -1,9 +1,0 @@
-{
-  "nome": "Ricardo",
-  "alunos": [
-    { "id": "1", "nome": "Antonio", "concluidosNaSemana": 3, "meta": 4, "status": "ativo", "concluiuHoje": true },
-    { "id": "2", "nome": "Ana Oliveira", "concluidosNaSemana": 2, "meta": 4, "status": "ativo", "concluiuHoje": false },
-    { "id": "3", "nome": "Carlos Silva", "concluidosNaSemana": 0, "meta": 3, "status": "ativo", "concluiuHoje": true },
-    { "id": "4", "nome": "Marcos Souza", "concluidosNaSemana": 0, "meta": 4, "status": "pendente", "concluiuHoje": false }
-  ]
-}

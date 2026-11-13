@@ -41,6 +41,16 @@ export function observarHistoricoDoAluno(aoMudar) {
     });
 }
 
+// Histórico de todos os alunos do professor logado (Dashboard e Detalhes do aluno, RF12 e RF13).
+export function observarHistoricoDoProfessor(aoMudar) {
+    const consulta = query(colecaoHistorico(), where("professorId", "==", auth.currentUser.uid));
+
+    return onSnapshot(consulta, (resultado) => {
+        const lista = resultado.docs.map((documento) => ({ id: documento.id, ...documento.data() }));
+        aoMudar(lista.sort((a, b) => dataDe(b) - dataDe(a))); // mais recente primeiro
+    });
+}
+
 // Segunda-feira desta semana, à meia-noite.
 function inicioDaSemana() {
     const data = new Date();
@@ -52,6 +62,13 @@ function inicioDaSemana() {
 
 export function contarNaSemana(historico) {
     const inicio = inicioDaSemana();
+    return historico.filter((item) => dataDe(item) >= inicio).length;
+}
+
+// Quantos treinos foram concluídos hoje (a partir da meia-noite).
+export function contarHoje(historico) {
+    const inicio = new Date();
+    inicio.setHours(0, 0, 0, 0);
     return historico.filter((item) => dataDe(item) >= inicio).length;
 }
 
