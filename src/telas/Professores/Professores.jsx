@@ -4,17 +4,22 @@ import { ScrollView, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CartaoPessoa } from "../../components/CartaoPessoa/CartaoPessoa";
 import { VincularCodigo } from "../../components/VincularCodigo/VincularCodigo";
-import { observarProfessoresDoAluno } from "../../services/vinculoService";
+import { observarProfessoresDaAcademia, observarProfessoresDoAluno } from "../../services/vinculoService";
 import global from "../../styles/global";
-import dados from "./dados.json";
 import styles from "./Professores.styles";
 
 // Aba Professores do aluno (RF19): vínculo por código e listas de professores.
 export default function Professores() {
   const [meusProfessores, setMeusProfessores] = useState([]);
-  const { professoresAcademia } = dados;
+  const [professoresAcademia, setProfessoresAcademia] = useState([]);
 
   useEffect(() => observarProfessoresDoAluno(setMeusProfessores), []);
+  useEffect(() => observarProfessoresDaAcademia(setProfessoresAcademia), []);
+
+  // Na lista da academia, só quem ainda não é meu professor (para não aparecer duas vezes).
+  const outrosProfessores = professoresAcademia.filter(
+    (professor) => !meusProfessores.some((meu) => meu.id === professor.id)
+  );
 
   return (
     <SafeAreaView style={global.tela} edges={["top"]}>
@@ -46,9 +51,17 @@ export default function Professores() {
         )}
 
         <Text style={styles.secao}>Professores da academia</Text>
-        {professoresAcademia.map((professor) => (
-          <CartaoPessoa key={professor.id} nome={professor.nome} detalhe={professor.area} />
-        ))}
+        {outrosProfessores.length === 0 ? (
+          <Text style={styles.vazio}>Nenhum outro professor cadastrado.</Text>
+        ) : (
+          outrosProfessores.map((professor) => (
+            <CartaoPessoa
+              key={professor.id}
+              nome={professor.nome}
+              detalhe={professor.cref ? `CREF ${professor.cref}` : "Professor"}
+            />
+          ))
+        )}
       </ScrollView>
     </SafeAreaView>
   );

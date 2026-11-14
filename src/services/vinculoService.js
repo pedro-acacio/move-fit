@@ -69,3 +69,13 @@ export function observarProfessoresDoAluno(aoMudar) {
     aoMudar(resultado.docs.map((doc) => ({ id: doc.data().professorId, nome: doc.data().professorNome })));
   });
 }
+
+// Todos os professores cadastrados no app (aba Professores do aluno, RF19).
+export function observarProfessoresDaAcademia(aoMudar) {
+  const consulta = query(collection(banco, "usuarios"), where("perfil", "==", "professor"));
+
+  return onSnapshot(consulta, (resultado) => {
+    aoMudar(resultado.docs.map((doc) => ({ id: doc.id, nome: doc.data().nome, cref: doc.data().cref })));
+  });
+}
+
