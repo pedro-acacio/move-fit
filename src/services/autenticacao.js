@@ -72,7 +72,8 @@ export function observarUsuario(aoMudar) {
         }
         // Lê o perfil em tempo real: no cadastro, o documento é criado logo depois da conta.
         pararPerfil = onSnapshot(doc(banco, "usuarios", conta.uid), (documento) => {
-            aoMudar(documento.exists() ? documento.data() : null);
+            // Junta o uid da conta aos dados do perfil (o chat usa para saber quais mensagens são minhas).
+            aoMudar(documento.exists() ? { uid: conta.uid, ...documento.data() } : null);
         });
     });
     return () => {

@@ -1,32 +1,65 @@
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useRef, useState } from "react";
 import { FlatList, KeyboardAvoidingView, Platform, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BalaoMensagem } from "../../components/BalaoMensagem/BalaoMensagem";
+import { CaixaMensagem } from "../../components/CaixaMensagem/CaixaMensagem";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
+import { useUsuarioLogado } from "../../context/UsuarioLogado";
+import { enviarMensagem, observarConversa } from "../../services/chatService";
+import { observarAlunosDoProfessor, observarProfessoresDoAluno } from "../../services/vinculoService";
 import global from "../../styles/global";
 import styles from "./Chat.styles";
-import dados from "./dados.json";
-import { useRef, useState } from "react";
-import { CaixaMensagem } from "../../components/CaixaMensagem/CaixaMensagem";
 
 // Chat entre aluno e professor (RF20). A prop "tipo" diz quem está usando a tela.
-// TODO: trocar o dados.json pelas mensagens em tempo real do Firebase, usando o id da rota.
+// O id da rota é o uid da outra pessoa: o professor (na área do aluno) ou o aluno (na área do professor).
 export default function Chat({ tipo }) {
-    const [mensagens, setMensagens] = useState(dados.mensagens);
+    const { id } = useLocalSearchParams();
+    const { usuario } = useUsuarioLogado();
+    // null = ainda carregando a lista de contatos vinculados.
+    const [contatos, setContatos] = useState(null);
+    const [mensagens, setMensagens] = useState([]);
     const [texto, setTexto] = useState("");
     const lista = useRef(null);
 
-    function enviar() {
+    // A conversa é o par aluno + professor.
+    const alunoId = tipo === "aluno" ? usuario.uid : id;
+    const professorId = tipo === "professor" ? usuario.uid : id;
+
+    // Contatos vinculados: serve para mostrar o nome no topo e conferir o vínculo.
+    useEffect(
+        () => (tipo === "aluno" ? observarProfessoresDoAluno(setContatos) : observarAlunosDoProfessor(setContatos)),
+        [tipo]
+    );
+
+    useEffect(() => observarConversa(alunoId, professorId, setMensagens), [alunoId, professorId]);
+
+    const contato = contatos?.find((item) => item.id === id);
+
+    async function enviar() {
         const conteudo = texto.trim();
         if (!conteudo) return;
 
-        const nova = { id: String(Date.now()), autor: tipo, texto: conteudo };
-        setMensagens([...mensagens, nova]);
         setTexto("");
+        try {
+            await enviarMensagem(alunoId, professorId, conteudo);
+        } catch {
+            setTexto(conteudo); // não enviou: devolve o texto para tentar de novo
+        }
+    }
+
+    if (contatos !== null && !contato) {
+        return (
+            <SafeAreaView style={global.tela} edges={["top", "bottom"]}>
+                <Cabecalho titulo="Chat" />
+                <Text style={styles.dia}>Conversa não encontrada.</Text>
+            </SafeAreaView>
+        );
     }
 
     return (
         <SafeAreaView style={global.tela} edges={["top", "bottom"]}>
-            <Cabecalho titulo={dados.contato[tipo]} />
+            <Cabecalho titulo={contato?.nome ?? "Carregando..."} />
 
             <KeyboardAvoidingView
                 style={styles.conteudo}
@@ -39,9 +72,14 @@ export default function Chat({ tipo }) {
                     contentContainerStyle={styles.listaConteudo}
                     data={mensagens}
                     keyExtractor={(mensagem) => mensagem.id}
-                    ListHeaderComponent={<Text style={styles.dia}>Hoje</Text>}
+                    ListEmptyComponent={
+                        <Text style={styles.dia}>Nenhuma mensagem ainda. Envie a primeira!</Text>
+                    }
                     renderItem={({ item }) => (
-                        <BalaoMensagem autor={item.autor === tipo ? "usuario" : "ia"} texto={item.texto} />
+                        <BalaoMensagem
+                            autor={item.autorId === usuario.uid ? "usuario" : "ia"}
+                            texto={item.texto}
+                        />
                     )}
                 />
 
