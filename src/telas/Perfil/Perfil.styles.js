@@ -25,6 +25,18 @@ export default StyleSheet.create({
     marginBottom: 24,
     textAlign: "center",
   },
+  link: {
+    fontSize: 14,
+    fontWeight: "600",
+    textDecorationLine: "underline",
+    marginTop: 24,
+  },
+  apagarConta: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: colors.perigo,
+    marginTop: 16,
+  },
   cartaoCodigo: {
     width: "100%",
     alignItems: "center",

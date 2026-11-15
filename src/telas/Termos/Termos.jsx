@@ -69,14 +69,14 @@ const SECOES = [
   {
     titulo: "8. Por quanto tempo guardamos",
     paragrafos: [
-      "Os dados ficam guardados enquanto a sua conta existir. Se você pedir a exclusão da conta, apagamos os seus dados pessoais, a não ser os que a lei obrigue a manter.",
+      "Os dados ficam guardados enquanto a sua conta existir. Você pode apagar a sua conta a qualquer momento na aba Perfil, em \"Apagar minha conta\". Isso apaga o seu perfil, o seu histórico, os seus vínculos e as conversas do chat; no caso de professores, também os treinos e exercícios criados.",
     ],
   },
   {
     titulo: "9. Seus direitos",
     paragrafos: [
       "Pela LGPD (art. 18), você pode a qualquer momento: confirmar se tratamos os seus dados e ter acesso a eles; corrigir dados incompletos ou errados; pedir a exclusão dos dados e da conta; saber com quem os dados são compartilhados; e retirar o seu consentimento.",
-      "Para qualquer um desses pedidos, fale com a equipe do projeto. Você também pode reclamar à ANPD (Autoridade Nacional de Proteção de Dados).",
+      "Na aba Perfil você vê todos os dados do seu cadastro e pode apagar a sua conta. Para os outros pedidos, fale com a equipe do projeto. Você também pode reclamar à ANPD (Autoridade Nacional de Proteção de Dados).",
     ],
   },
   {

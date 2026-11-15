@@ -96,6 +96,8 @@ export function observarUsuario(aoMudar) {
 
 // O Firebase devolve erros em inglês, com um código. Aqui viram mensagens em português.
 const MENSAGENS = {
+    "auth/requires-recent-login": "Por segurança, saia e entre de novo antes de apagar a conta.",
+    "permission-denied": "O Firebase não permitiu apagar os seus dados. Fale com a equipe do projeto.",
     "termos-nao-aceitos": "Para criar a conta, aceite os Termos de Uso.",
     "auth/invalid-credential": "E-mail ou senha incorretos.",
     "auth/wrong-password": "E-mail ou senha incorretos.",

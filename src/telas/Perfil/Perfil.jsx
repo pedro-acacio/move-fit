@@ -1,5 +1,6 @@
 import { useUsuarioLogado } from "../../context/UsuarioLogado";
 import { sair } from "../../services/autenticacao";
+import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,12 +12,25 @@ import { escolherFotoDePerfil } from "../../services/fotoPerfilService";
 import global from "../../styles/global";
 import styles from "./Perfil.styles";
 
+const TIPOS = { aluno: "Aluno", professor: "Professor" };
+
+// Datas do Firestore (Timestamp) no formato dd/mm/aaaa.
+function formatarData(timestamp) {
+  const data = timestamp?.toDate?.();
+  if (!data) return "Não registrado";
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  return `${dia}/${mes}/${data.getFullYear()}`;
+}
+
 const AVISOS = {
   aluno: "Informe este código ao professor para vincular a sua conta.",
   professor: "Informe este código ao aluno, ou digite o dele na aba Alunos, para criar o vínculo.",
 };
 
 // Perfil do aluno e do professor (RF14): mostra os dados de quem está logado.
+// Mostra todos os dados guardados no perfil (LGPD: o usuário tem direito de ver os próprios dados)
+// e dá acesso aos Termos de Uso e à exclusão da conta.
 // A prop "tipo" diz qual aviso mostrar embaixo do código.
 export default function Perfil({ tipo }) {
   const { usuario } = useUsuarioLogado();
@@ -52,6 +66,9 @@ export default function Perfil({ tipo }) {
         <InfoPerfil rotulo="Nome" valor={usuario?.nome ?? "..."} />
         <InfoPerfil rotulo="E-mail" valor={usuario?.email ?? "..."} />
         {usuario?.cref && <InfoPerfil rotulo="CREF" valor={usuario.cref} />}
+        <InfoPerfil rotulo="Tipo de conta" valor={TIPOS[usuario?.perfil] ?? "..."} />
+        <InfoPerfil rotulo="Conta criada em" valor={formatarData(usuario?.criadoEm)} />
+        <InfoPerfil rotulo="Termos de Uso aceitos em" valor={formatarData(usuario?.termosAceitosEm)} />
 
         <View style={styles.cartaoCodigo}>
           <Text style={styles.rotuloCodigo}>Seu código</Text>
@@ -60,6 +77,13 @@ export default function Perfil({ tipo }) {
         </View>
 
         <Botao texto="Sair" perigo onPress={sair} />
+
+        <Text style={[styles.link, { color: cor }]} onPress={() => router.push("/termos")}>
+          Termos de Uso e Política de Privacidade
+        </Text>
+        <Text style={styles.apagarConta} onPress={() => router.push(`/${tipo}/excluir-conta`)}>
+          Apagar minha conta
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );
