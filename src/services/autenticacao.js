@@ -31,11 +31,23 @@ async function buscarUsuario(uid) {
     return documento.exists() ? documento.data() : null;
 }
 
-export async function cadastrar({ nome, email, senha, perfil, cref }) {
+export async function cadastrar({ nome, email, senha, perfil, cref, aceitouTermos }) {
+    // Sem o aceite dos Termos de Uso não cria conta (LGPD), mesmo que a tela deixe passar.
+    if (!aceitouTermos) {
+        throw { code: "termos-nao-aceitos" };
+    }
     const { user } = await createUserWithEmailAndPassword(auth, email, senha);
     const codigo = await gerarCodigoUnico();
 
-    const usuario = { nome, email, perfil, codigo, criadoEm: serverTimestamp() };
+    // "termosAceitosEm" registra quando a pessoa aceitou os Termos de Uso (prova do consentimento).
+    const usuario = {
+        nome,
+        email,
+        perfil,
+        codigo,
+        criadoEm: serverTimestamp(),
+        termosAceitosEm: serverTimestamp(),
+    };
 
     if (perfil === "professor") {
         usuario.cref = cref;
@@ -84,6 +96,7 @@ export function observarUsuario(aoMudar) {
 
 // O Firebase devolve erros em inglês, com um código. Aqui viram mensagens em português.
 const MENSAGENS = {
+    "termos-nao-aceitos": "Para criar a conta, aceite os Termos de Uso.",
     "auth/invalid-credential": "E-mail ou senha incorretos.",
     "auth/wrong-password": "E-mail ou senha incorretos.",
     "auth/user-not-found": "E-mail ou senha incorretos.",

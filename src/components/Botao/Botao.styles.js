@@ -20,6 +20,9 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primaria,
   },
+  desativado: {
+    opacity: 0.45,
+  },
   textoSecundario: {
     color: colors.primaria,
   },

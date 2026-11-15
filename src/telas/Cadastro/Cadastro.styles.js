@@ -32,6 +32,12 @@ export default StyleSheet.create({
   erro:{
     marginBottom: 16,
   },
+  aviso: {
+    fontSize: 13,
+    color: colors.textoMuted,
+    textAlign: "center",
+    marginTop: 10,
+  },
   entrar: {
     marginTop: 24,
     alignItems: "center",
