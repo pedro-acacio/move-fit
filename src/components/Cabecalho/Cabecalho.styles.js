@@ -12,6 +12,9 @@ export default StyleSheet.create({
     color: colors.texto,
     marginRight: 8,
   },
+  foto: {
+    marginRight: 10,
+  },
   titulo: {
     fontSize: 17,
     fontWeight: "700",

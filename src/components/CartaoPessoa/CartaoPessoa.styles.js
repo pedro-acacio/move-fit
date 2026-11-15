@@ -15,21 +15,15 @@ export default StyleSheet.create({
     borderWidth: 0,
     paddingHorizontal: 0,
   },
-  foto: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+  moldura: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     borderWidth: 1,
-    borderStyle: "dashed",
     borderColor: colors.primaria,
-    backgroundColor: colors.borda,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
-  },
-  fotoTexto: {
-    fontSize: 11,
-    color: colors.texto,
   },
   info: {
     flex: 1,

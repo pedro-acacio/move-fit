@@ -43,6 +43,7 @@ export default function Alunos() {
           alunosEncontrados.map((aluno) => (
             <CartaoPessoa
               key={aluno.id}
+              usuarioId={aluno.id}
               nome={aluno.nome}
               detalhe="Vinculado"
               seta

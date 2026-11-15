@@ -65,6 +65,7 @@ export default function DetalhesAluno() {
         showsVerticalScrollIndicator={false}
       >
         <CartaoPessoa
+          usuarioId={aluno.id}
           nome={aluno.nome}
           detalhe="Aluno vinculado"
           status="ativo"

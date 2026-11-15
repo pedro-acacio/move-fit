@@ -1,6 +1,6 @@
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { auth, banco } from "./firebase";
 
 // Foto de perfil do aluno e do professor.
@@ -32,4 +32,12 @@ export async function escolherFotoDePerfil() {
     foto: `data:image/jpeg;base64,${pronta.base64}`,
   });
   return true;
+}
+
+// Acompanha a foto de outra pessoa (ex.: o professor na lista do aluno, ou o contato no chat).
+// Avisa de novo sempre que ela trocar a foto. Devolve uma função que desliga o vigia.
+export function observarFotoDoUsuario(usuarioId, aoMudar) {
+  return onSnapshot(doc(banco, "usuarios", usuarioId), (documento) => {
+    aoMudar(documento.data()?.foto ?? null);
+  });
 }

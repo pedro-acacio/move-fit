@@ -42,6 +42,7 @@ export default function Professores() {
           meusProfessores.map((professor) => (
             <CartaoPessoa
               key={professor.id}
+              usuarioId={professor.id}
               nome={professor.nome}
               detalhe="Vinculado · toque para conversar"
               seta
@@ -57,6 +58,7 @@ export default function Professores() {
           outrosProfessores.map((professor) => (
             <CartaoPessoa
               key={professor.id}
+              usuarioId={professor.id}
               nome={professor.nome}
               detalhe={professor.cref ? `CREF ${professor.cref}` : "Professor"}
             />

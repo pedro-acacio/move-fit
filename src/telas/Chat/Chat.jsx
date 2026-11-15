@@ -59,7 +59,7 @@ export default function Chat({ tipo }) {
 
     return (
         <SafeAreaView style={global.tela} edges={["top", "bottom"]}>
-            <Cabecalho titulo={contato?.nome ?? "Carregando..."} />
+            <Cabecalho titulo={contato?.nome ?? "Carregando..."} fotoDe={contato?.id} />
 
             <KeyboardAvoidingView
                 style={styles.conteudo}
