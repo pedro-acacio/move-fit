@@ -10,16 +10,12 @@ import styles from "./Termos.styles";
 
 const ATUALIZADO_EM = "15 de novembro de 2026";
 
-// E-mail para os pedidos da seção 9 (ver, corrigir ou apagar dados).
-// TODO: trocar pelo e-mail real da equipe antes de entregar.
-const CONTATO = "[e-mail da equipe]";
-
 const SECOES = [
   {
     titulo: "1. Quem somos",
     paragrafos: [
       "O MoveFit é um aplicativo criado como projeto acadêmico por um grupo de estudantes. Ele conecta alunos e professores de educação física para montar, enviar e acompanhar treinos.",
-      `A equipe do projeto é a responsável (controladora) pelos dados tratados no app. Contato: ${CONTATO}.`,
+      "A equipe do projeto é a responsável (controladora) pelos dados tratados no app.",
       "Ao marcar a opção \"Li e aceito\" no cadastro, você declara que leu estes termos e concorda com eles. Sem esse aceite não é possível criar a conta.",
     ],
   },
@@ -80,7 +76,7 @@ const SECOES = [
     titulo: "9. Seus direitos",
     paragrafos: [
       "Pela LGPD (art. 18), você pode a qualquer momento: confirmar se tratamos os seus dados e ter acesso a eles; corrigir dados incompletos ou errados; pedir a exclusão dos dados e da conta; saber com quem os dados são compartilhados; e retirar o seu consentimento.",
-      `Para qualquer um desses pedidos, escreva para ${CONTATO}. Você também pode reclamar à ANPD (Autoridade Nacional de Proteção de Dados).`,
+      "Para qualquer um desses pedidos, fale com a equipe do projeto. Você também pode reclamar à ANPD (Autoridade Nacional de Proteção de Dados).",
     ],
   },
   {
