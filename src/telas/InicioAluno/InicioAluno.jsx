@@ -2,6 +2,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AnelProgresso } from "../../components/AnelProgresso/AnelProgresso";
 import { BotaoFlutuante } from "../../components/BotaoFlutuante/BotaoFlutuante";
 import { CartaoMeta } from "../../components/CartaoMeta/CartaoMeta";
 import { CartaoTreino } from "../../components/CartaoTreino/CartaoTreino";
@@ -46,6 +47,11 @@ export default function InicioAluno() {
       </View>
 
       <ScrollView contentContainerStyle={styles.conteudo} showsVerticalScrollIndicator={false}>
+        {/* Mesmo anel do Dashboard do professor, aqui mostrando a meta semanal do aluno. */}
+        <View style={styles.anel}>
+          <AnelProgresso concluidos={concluidosNaSemana} total={meta} rotulo="meta semanal" />
+        </View>
+
         <CartaoMeta
           titulo="Meta semanal"
           concluidos={concluidosNaSemana}

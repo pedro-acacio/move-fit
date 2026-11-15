@@ -24,6 +24,9 @@ export default StyleSheet.create({
   fotoTexto: {
     fontSize: 22,
   },
+  anel: {
+    marginBottom: 20,
+  },
   conteudo: {
     paddingBottom: 100, // espaço para o botão flutuante não cobrir a dica
   },
