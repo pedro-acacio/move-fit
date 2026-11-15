@@ -1,7 +1,0 @@
-{
-  "alunos": [
-    { "id": "1", "nome": "Antonio", "status": "ativo", "detalhe": "Vinculado · 3 de 4 treinos" },
-    { "id": "2", "nome": "Ana Oliveira", "status": "ativo", "detalhe": "Vinculada · 2 de 4 treinos" },
-    { "id": "4", "nome": "Marcos Souza", "status": "pendente", "detalhe": "Aguardando confirmação do aluno" }
-  ]
-}
