@@ -1,12 +1,13 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AnelProgresso } from "../../components/AnelProgresso/AnelProgresso";
 import { BotaoFlutuante } from "../../components/BotaoFlutuante/BotaoFlutuante";
 import { CartaoMeta } from "../../components/CartaoMeta/CartaoMeta";
 import { CartaoTreino } from "../../components/CartaoTreino/CartaoTreino";
 import { Dica } from "../../components/Dica/Dica";
+import { FotoPerfil } from "../../components/FotoPerfil/FotoPerfil";
 import { useUsuarioLogado } from "../../context/UsuarioLogado";
 import { observarTreinosDoAluno } from "../../services/treinosService";
 import global from "../../styles/global";
@@ -41,9 +42,7 @@ export default function InicioAluno() {
     <SafeAreaView style={global.tela} edges={["top"]}>
       <View style={styles.topo}>
         <Text style={styles.saudacao}>Olá, {usuario?.nome}</Text>
-        <Pressable style={styles.foto} onPress={() => router.navigate("/aluno/perfil")}>
-          <Text style={styles.fotoTexto}>👤</Text>
-        </Pressable>
+        <FotoPerfil foto={usuario?.foto} tamanho={48} onPress={() => router.navigate("/aluno/perfil")} />
       </View>
 
       <ScrollView contentContainerStyle={styles.conteudo} showsVerticalScrollIndicator={false}>

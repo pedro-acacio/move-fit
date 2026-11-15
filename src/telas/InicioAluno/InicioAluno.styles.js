@@ -13,17 +13,6 @@ export default StyleSheet.create({
     fontWeight: "700",
     color: colors.texto,
   },
-  foto: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: colors.borda,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  fotoTexto: {
-    fontSize: 22,
-  },
   anel: {
     marginBottom: 20,
   },

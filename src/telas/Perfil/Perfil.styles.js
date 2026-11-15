@@ -12,17 +12,18 @@ export default StyleSheet.create({
     alignItems: "center",
     paddingBottom: 40,
   },
-  icone: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: colors.borda,
-    alignItems: "center",
-    justifyContent: "center",
+  trocarFoto: {
+    fontSize: 14,
+    fontWeight: "600",
+    marginTop: 8,
     marginBottom: 24,
   },
-  iconeTexto: {
-    fontSize: 40,
+  erroFoto: {
+    fontSize: 13,
+    color: colors.perigo,
+    marginTop: -16,
+    marginBottom: 24,
+    textAlign: "center",
   },
   cartaoCodigo: {
     width: "100%",
