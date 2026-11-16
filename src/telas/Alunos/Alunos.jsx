@@ -9,7 +9,7 @@ import { observarAlunosDoProfessor } from "../../services/vinculoService";
 import global from "../../styles/global";
 import styles from "./Alunos.styles";
 
-// Aba Alunos do professor (RF10): vínculo por código, busca e lista de alunos.
+
 export default function Alunos() {
   const [alunos, setAlunos] = useState([]);
   const [busca, setBusca] = useState("");

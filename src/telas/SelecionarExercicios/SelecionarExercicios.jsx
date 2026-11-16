@@ -58,7 +58,7 @@ export default function SelecionarExercicios() {
     }));
   }
 
-  // Volta para o cadastro do treino levando os exercícios marcados.
+ 
   function adicionarAoTreino() {
     const escolhidos = exercicios
       .filter((exercicio) => selecionados[exercicio.id])

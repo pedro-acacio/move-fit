@@ -10,7 +10,7 @@ import { excluirExercicio, observarExerciciosDoProfessor } from "../../services/
 import global from "../../styles/global";
 import styles from "./Exercicios.styles";
 
-// Aba Exercícios do professor (RF07): lista, busca, editar e excluir exercícios.
+
 export default function Exercicios() {
   const [exercicios, setExercicios] = useState([]);
   const [busca, setBusca] = useState("");
@@ -23,8 +23,7 @@ export default function Exercicios() {
     exercicio.nome.toLowerCase().includes(termo)
   );
 
-  // O aviso some com animação: um segundo toque em "Excluir" nesse meio-tempo
-  // chegaria aqui com paraExcluir já null. Por isso a conferência antes.
+  
   function confirmarExclusao() {
     if (!paraExcluir) return;
     excluirExercicio(paraExcluir.id);

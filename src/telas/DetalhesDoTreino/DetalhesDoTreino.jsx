@@ -13,18 +13,17 @@ import global from "../../styles/global";
 import styles from "./DetalhesDoTreino.styles";
 import { concluiuHoje, observarHistoricoDoAluno, registrarConclusao } from "../../services/historicoService";
 
-// Detalhes do treino do aluno (RF15, RF16, RF16.1): marca cada exercício e finaliza o treino.
-// TODO: guardar o treino em cache offline (RNF06) para consultar sem internet.
+
 export default function DetalhesDoTreino() {
   const { id } = useLocalSearchParams();
-  // undefined = ainda carregando; null = não existe (ou sem conexão).
+  
   const [treino, setTreino] = useState(undefined);
   const [feitos, setFeitos] = useState([]);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState(null);
   const [historico, setHistorico] = useState([]);
 
-  // Carrega o treino pelo id da rota; "ativo" evita gravar estado depois de sair da tela.
+  
   useEffect(() => {
     let ativo = true;
 
@@ -43,7 +42,7 @@ export default function DetalhesDoTreino() {
     };
   }, [id]);
 
-  // Histórico do aluno em tempo real: serve para saber se este treino já foi concluído hoje.
+ 
   useEffect(() => observarHistoricoDoAluno(setHistorico), []);
 
   if (treino === undefined) {
@@ -76,7 +75,7 @@ export default function DetalhesDoTreino() {
     );
   }
 
-  // Grava a conclusão no histórico (RF16.1) e volta para a Home avisando.
+ 
   async function concluirTreino() {
     if (salvando || jaConcluido) return;
     setErro(null);

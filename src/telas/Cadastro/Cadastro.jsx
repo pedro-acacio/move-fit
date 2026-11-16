@@ -14,10 +14,10 @@ import { colors } from "../../styles/theme";
 import styles from "./Cadastro.styles";
 
 
-// Formato do CREF: 6 números, hífen, G ou P, barra e a sigla do estado. Ex.: 123456-G/CE
+
 const FORMATO_CREF = /^\d{6}-[GP]\/[A-Z]{2}$/;
 
-// Cadastro (RF03): cria a conta no Firebase e salva o perfil, com o código de 4 dígitos.
+
 export default function Cadastro() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -28,11 +28,11 @@ export default function Cadastro() {
   const [erro, setErro] = useState(null);
   const [carregando, setCarregando] = useState(false);
 
-  // A tela já mostra a cor da área escolhida: laranja para aluno, azul para professor.
+
   const cor = perfil === "professor" ? colors.primariaProfessor : colors.primaria;
   const crefFormatado = cref.trim().toUpperCase();
 
-  // O botão Cadastrar só acende com todos os campos preenchidos e os termos aceitos (LGPD).
+ 
   const camposPreenchidos =
     nome.trim() !== "" &&
     email.trim() !== "" &&
@@ -40,7 +40,6 @@ export default function Cadastro() {
     (perfil !== "professor" || crefFormatado !== "");
   const podeCadastrar = camposPreenchidos && aceitouTermos;
 
-  // Validação dos campos (RF03.2): devolve o problema encontrado ou null se estiver tudo certo.
   function validar() {
     if (!nome.trim()) return "Informe o seu nome.";
     if (!email.includes("@")) return "Informe um e-mail válido.";

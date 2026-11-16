@@ -9,7 +9,7 @@ import global from "../../styles/global";
 import styles from "./DetalhesDoExercicio.styles";
 
 export default function DetalhesDoExercicio() {
-  // "series", "repeticoes" e "treino" chegam quando o aluno vem dos Detalhes do treino (RF15.1).
+ 
   const { id, series, repeticoes, treino } = useLocalSearchParams();
   const exercicio = buscarExercicioPorId(id);
 
