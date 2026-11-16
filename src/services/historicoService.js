@@ -60,9 +60,21 @@ function inicioDaSemana() {
     return data;
 }
 
+// Dias diferentes com treino nesta semana (a meta é de dias treinados).
+// Dois treinos no mesmo dia contam como um só.
 export function contarNaSemana(historico) {
     const inicio = inicioDaSemana();
-    return historico.filter((item) => dataDe(item) >= inicio).length;
+    const dias = historico
+        .filter((item) => dataDe(item) >= inicio)
+        .map((item) => dataDe(item).toDateString()); // ex.: "Sun Nov 15 2026"
+    return new Set(dias).size; // o Set guarda cada dia uma vez só
+}
+
+// true se o aluno já concluiu este treino hoje (evita concluir o mesmo treino várias vezes).
+export function concluiuHoje(historico, treinoId) {
+    const inicio = new Date();
+    inicio.setHours(0, 0, 0, 0);
+    return historico.some((item) => item.treinoId === treinoId && dataDe(item) >= inicio);
 }
 
 // Quantos treinos foram concluídos hoje (a partir da meia-noite).

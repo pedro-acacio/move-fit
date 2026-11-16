@@ -11,7 +11,7 @@ import { buscarExercicioPorId } from "../../services/exerciciosService";
 import { buscarTreino } from "../../services/treinosService";
 import global from "../../styles/global";
 import styles from "./DetalhesDoTreino.styles";
-import { registrarConclusao } from "../../services/historicoService";
+import { concluiuHoje, observarHistoricoDoAluno, registrarConclusao } from "../../services/historicoService";
 
 // Detalhes do treino do aluno (RF15, RF16, RF16.1): marca cada exercício e finaliza o treino.
 // TODO: guardar o treino em cache offline (RNF06) para consultar sem internet.
@@ -22,6 +22,7 @@ export default function DetalhesDoTreino() {
   const [feitos, setFeitos] = useState([]);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState(null);
+  const [historico, setHistorico] = useState([]);
 
   // Carrega o treino pelo id da rota; "ativo" evita gravar estado depois de sair da tela.
   useEffect(() => {
@@ -41,6 +42,9 @@ export default function DetalhesDoTreino() {
       ativo = false;
     };
   }, [id]);
+
+  // Histórico do aluno em tempo real: serve para saber se este treino já foi concluído hoje.
+  useEffect(() => observarHistoricoDoAluno(setHistorico), []);
 
   if (treino === undefined) {
     return (
@@ -62,6 +66,7 @@ export default function DetalhesDoTreino() {
 
   const [titulo, subtitulo] = treino.nome.split(" · ");
   const total = treino.exercicios.length;
+  const jaConcluido = concluiuHoje(historico, id);
 
   function alternarFeito(exercicioId) {
     setFeitos((atual) =>
@@ -73,6 +78,7 @@ export default function DetalhesDoTreino() {
 
   // Grava a conclusão no histórico (RF16.1) e volta para a Home avisando.
   async function concluirTreino() {
+    if (salvando || jaConcluido) return;
     setErro(null);
     setSalvando(true);
     try {
@@ -130,8 +136,9 @@ export default function DetalhesDoTreino() {
       <View style={styles.rodape}>
         {erro && <Dica texto={erro} />}
         <Botao
-          texto={salvando ? "Salvando..." : "Marcar treino concluído"}
-          onPress={salvando ? undefined : concluirTreino}
+          texto={jaConcluido ? "Treino já concluído hoje" : salvando ? "Salvando..." : "Marcar treino concluído"}
+          onPress={concluirTreino}
+          desativado={salvando || jaConcluido}
         />
         <Botao
           texto="Tirar dúvida com a IA"
