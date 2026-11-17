@@ -6,7 +6,7 @@
 const CHAVE = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
 // Se um dia der erro 404 (modelo aposentado), troque pelo Flash mais novo
 // listado em https://ai.google.dev/gemini-api/docs/models
-const MODELO = "gemini-3.5-flash";
+const MODELO = "gemini-3.5-flash-lite";
 const ENDERECO = `https://generativelanguage.googleapis.com/v1beta/models/${MODELO}:generateContent`;
 
 // Instrução fixa que diz ao Gemini quem ele é dentro do app.

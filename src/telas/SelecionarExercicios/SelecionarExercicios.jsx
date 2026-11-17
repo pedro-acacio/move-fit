@@ -92,6 +92,9 @@ export default function SelecionarExercicios() {
         keyExtractor={(exercicio) => exercicio.id}
         style={styles.lista}
         contentContainerStyle={styles.listaConteudo}
+        ListEmptyComponent={
+          <Text style={styles.dicaTexto}>Nenhum exercício encontrado com esse nome.</Text>
+        }
         renderItem={({ item }) => (
           <CartaoExercicio
             exercicio={item}

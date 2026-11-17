@@ -23,7 +23,6 @@ export default function AbasProfessor() {
     >
       <Tabs.Screen name="index" options={{ title: "Início", tabBarIcon: icone("home") }} />
       <Tabs.Screen name="treinos" options={{ title: "Treinos", tabBarIcon: icone("barbell") }} />
-      <Tabs.Screen name="exercicios" options={{ title: "Exercícios", tabBarIcon: icone("list") }} />
       <Tabs.Screen name="alunos" options={{ title: "Alunos", tabBarIcon: icone("people") }} />
       <Tabs.Screen name="perfil" options={{ title: "Perfil", tabBarIcon: icone("person") }} />
     </Tabs>
