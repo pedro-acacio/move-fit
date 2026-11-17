@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { FlatList, KeyboardAvoidingView, Platform, Text } from "react-native";
+import { FlatList, KeyboardAvoidingView, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BalaoMensagem } from "../../components/BalaoMensagem/BalaoMensagem";
 import { CaixaMensagem } from "../../components/CaixaMensagem/CaixaMensagem";
@@ -61,10 +61,7 @@ export default function Chat({ tipo }) {
         <SafeAreaView style={global.tela} edges={["top", "bottom"]}>
             <Cabecalho titulo={contato?.nome ?? "Carregando..."} fotoDe={contato?.id} />
 
-            <KeyboardAvoidingView
-                style={styles.conteudo}
-                behavior={Platform.OS === "ios" ? "padding" : undefined}
-            >
+            <KeyboardAvoidingView style={styles.conteudo} behavior="padding">
                 <FlatList
                     ref={lista}
                     onContentSizeChange={() => lista.current?.scrollToEnd({ animated: true })}

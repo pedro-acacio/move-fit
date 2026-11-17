@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { FlatList, KeyboardAvoidingView, Platform, Text, View } from "react-native";
+import { FlatList, KeyboardAvoidingView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BalaoMensagem } from "../../components/BalaoMensagem/BalaoMensagem";
 import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
@@ -71,10 +71,7 @@ export default function Assistente() {
         <ContextoTreino treinos={treinos} selecionado={treino} aoSelecionar={(novo) => setTreinoId(novo.id)} />
       )}
 
-      <KeyboardAvoidingView
-        style={styles.conteudo}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-      >
+      <KeyboardAvoidingView style={styles.conteudo} behavior="padding">
         <FlatList
           ref={lista}
           data={[boasVindas, ...mensagens]}
