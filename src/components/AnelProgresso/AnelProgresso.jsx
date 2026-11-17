@@ -9,7 +9,7 @@ const ESPESSURA = 14;
 const RAIO = (TAMANHO - ESPESSURA) / 2;
 const CIRCUNFERENCIA = 2 * Math.PI * RAIO;
 
-// Anel de progresso: ex. quantos alunos já fizeram o treino hoje, de quantos estão vinculados.
+
 export function AnelProgresso({ concluidos, total, rotulo }) {
   const cor = useCorDaArea();
   const porcentagem = total > 0 ? concluidos / total : 0;

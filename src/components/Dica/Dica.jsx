@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 import styles from "./Dica.styles";
 
-// Caixa tracejada azul usada para dicas e avisos curtos.
+
 export function Dica({ texto }) {
   return (
     <View style={styles.caixa}>

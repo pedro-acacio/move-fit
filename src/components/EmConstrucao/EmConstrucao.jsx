@@ -4,8 +4,8 @@ import global from "../../styles/global";
 import { Cabecalho } from "../Cabecalho/Cabecalho";
 import styles from "./EmConstrucao.styles";
 
-// Tela provisória usada nas rotas que ainda não foram feitas.
-// Use "voltar" nas telas de detalhe (fora das abas) para mostrar a seta de voltar.
+
+
 export function EmConstrucao({ titulo, voltar }) {
   return (
     <SafeAreaView style={global.tela}>

@@ -3,10 +3,10 @@ import { Cabecalho } from "../../components/Cabecalho/Cabecalho";
 import global from "../../styles/global";
 import styles from "./Termos.styles";
 
-// Termos de Uso e Política de Privacidade (LGPD, Lei 13.709/2018), abertos pelo Cadastro.
-// O texto descreve o que o app realmente coleta hoje. Se um service passar a salvar
-// um dado novo, atualize a seção 3 e a data abaixo.
-// Para mudar o texto, edite a lista SECOES: cada item vira um título com os seus parágrafos.
+
+
+
+
 
 const ATUALIZADO_EM = "15 de novembro de 2026";
 

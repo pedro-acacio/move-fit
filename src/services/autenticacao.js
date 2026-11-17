@@ -8,10 +8,10 @@ import {
 import { collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import { auth, banco } from "./firebase";
 
-// Tudo sobre a conta do usuário: cadastro, login, sair e recuperar senha (RF02, RF03).
-// O perfil de cada usuário fica na coleção "usuarios", no documento com o mesmo id da conta (uid).
 
-// Gera um código de 4 dígitos que nenhum outro usuário tenha (RF03.1).
+
+
+
 
 async function gerarCodigoUnico() {
     let codigo;
@@ -32,14 +32,14 @@ async function buscarUsuario(uid) {
 }
 
 export async function cadastrar({ nome, email, senha, perfil, cref, aceitouTermos }) {
-    // Sem o aceite dos Termos de Uso não cria conta (LGPD), mesmo que a tela deixe passar.
+
     if (!aceitouTermos) {
         throw { code: "termos-nao-aceitos" };
     }
     const { user } = await createUserWithEmailAndPassword(auth, email, senha);
     const codigo = await gerarCodigoUnico();
 
-    // "termosAceitosEm" registra quando a pessoa aceitou os Termos de Uso (prova do consentimento).
+
     const usuario = {
         nome,
         email,
@@ -69,8 +69,8 @@ export function recuperarSenha(email) {
     return sendPasswordResetEmail(auth, email);
 }
 
-// Vigia o usuário: avisa sempre que alguém entra ou sai e entrega os dados do perfil (ou null).
-// Devolve uma função que desliga o vigia.
+
+
 export function observarUsuario(aoMudar) {
     let pararPerfil = () => { };
 
@@ -82,9 +82,9 @@ export function observarUsuario(aoMudar) {
             aoMudar(null);
             return;
         }
-        // Lê o perfil em tempo real: no cadastro, o documento é criado logo depois da conta.
+
         pararPerfil = onSnapshot(doc(banco, "usuarios", conta.uid), (documento) => {
-            // Junta o uid da conta aos dados do perfil (o chat usa para saber quais mensagens são minhas).
+
             aoMudar(documento.exists() ? { uid: conta.uid, ...documento.data() } : null);
         });
     });
@@ -94,7 +94,7 @@ export function observarUsuario(aoMudar) {
     };
 }
 
-// O Firebase devolve erros em inglês, com um código. Aqui viram mensagens em português.
+
 const MENSAGENS = {
     "auth/requires-recent-login": "Por segurança, saia e entre de novo antes de apagar a conta.",
     "permission-denied": "O Firebase não permitiu apagar os seus dados. Fale com a equipe do projeto.",

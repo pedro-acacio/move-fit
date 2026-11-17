@@ -2,8 +2,8 @@ import { Pressable, Text, View } from "react-native";
 import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./SeletorOpcoes.styles";
 
-// Lista de opções em "pílulas" para escolher uma (ex.: o aluno do treino).
-// opcoes = [{ chave: "1", rotulo: "Antonio" }, ...]
+
+
 export function SeletorOpcoes({ opcoes, valor, aoMudar }) {
   const cor = useCorDaArea();
 

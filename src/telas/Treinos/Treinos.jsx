@@ -15,7 +15,7 @@ import {
 import global from "../../styles/global";
 import styles from "./Treinos.styles";
 
-// Aba Treinos do professor (RF06.1, RF06.3, RF06.6, RF09): busca, editar, duplicar e excluir.
+
 export default function Treinos() {
   const { aviso } = useLocalSearchParams();
   const [treinos, setTreinos] = useState([]);
@@ -27,8 +27,8 @@ export default function Treinos() {
   const termo = busca.trim().toLowerCase();
   const encontrados = treinos.filter((treino) => treino.nome.toLowerCase().includes(termo));
 
-  // O aviso some com animação: um segundo toque em "Excluir" nesse meio-tempo
-  // chegaria aqui com paraExcluir já null. Por isso a conferência antes.
+
+
   function confirmarExclusao() {
     if (!paraExcluir) return;
     excluirTreino(paraExcluir.id);

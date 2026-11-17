@@ -3,8 +3,8 @@ import { useCorDaArea } from "../../context/CorDaArea";
 import { CaixaMarcar } from "../CaixaMarcar/CaixaMarcar";
 import styles from "./AceiteTermos.styles";
 
-// "Li e aceito os Termos de Uso", usado no Cadastro.
-// O trecho sublinhado abre os termos completos.
+
+
 export function AceiteTermos({ marcado, aoMudar, aoAbrirTermos }) {
   const cor = useCorDaArea();
 

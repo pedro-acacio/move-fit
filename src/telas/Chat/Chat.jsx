@@ -11,22 +11,22 @@ import { observarAlunosDoProfessor, observarProfessoresDoAluno } from "../../ser
 import global from "../../styles/global";
 import styles from "./Chat.styles";
 
-// Chat entre aluno e professor (RF20). A prop "tipo" diz quem está usando a tela.
-// O id da rota é o uid da outra pessoa: o professor (na área do aluno) ou o aluno (na área do professor).
+
+
 export default function Chat({ tipo }) {
     const { id } = useLocalSearchParams();
     const { usuario } = useUsuarioLogado();
-    // null = ainda carregando a lista de contatos vinculados.
+
     const [contatos, setContatos] = useState(null);
     const [mensagens, setMensagens] = useState([]);
     const [texto, setTexto] = useState("");
     const lista = useRef(null);
 
-    // A conversa é o par aluno + professor.
+
     const alunoId = tipo === "aluno" ? usuario.uid : id;
     const professorId = tipo === "professor" ? usuario.uid : id;
 
-    // Contatos vinculados: serve para mostrar o nome no topo e conferir o vínculo.
+
     useEffect(
         () => (tipo === "aluno" ? observarProfessoresDoAluno(setContatos) : observarAlunosDoProfessor(setContatos)),
         [tipo]
@@ -44,7 +44,7 @@ export default function Chat({ tipo }) {
         try {
             await enviarMensagem(alunoId, professorId, conteudo);
         } catch {
-            setTexto(conteudo); // não enviou: devolve o texto para tentar de novo
+            setTexto(conteudo);
         }
     }
 

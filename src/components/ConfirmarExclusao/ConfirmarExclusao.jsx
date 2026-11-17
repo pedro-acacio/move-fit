@@ -2,7 +2,7 @@ import { Modal, Text, View } from "react-native";
 import { Botao } from "../Botao/Botao";
 import styles from "./ConfirmarExclusao.styles";
 
-// Aviso por cima da tela para confirmar uma exclusão (treino ou exercício).
+
 
 export function ConfirmarExclusao({visivel, titulo, aoConfirmar,aoCancelar}){
     return(

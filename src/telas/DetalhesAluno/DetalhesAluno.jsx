@@ -18,11 +18,11 @@ import { observarAlunosDoProfessor } from "../../services/vinculoService";
 import global from "../../styles/global";
 import styles from "./DetalhesAluno.styles";
 
-// Detalhes do aluno (RF05.1, RF13): constância, treinos atribuídos e treinos concluídos.
-// O id da rota é o uid do aluno. Só abre se ele estiver vinculado ao professor logado.
+
+
 export default function DetalhesAluno() {
   const { id } = useLocalSearchParams();
-  // null = ainda carregando a lista de alunos vinculados.
+
   const [alunos, setAlunos] = useState(null);
   const [treinos, setTreinos] = useState([]);
   const [historico, setHistorico] = useState([]);
@@ -51,7 +51,7 @@ export default function DetalhesAluno() {
     );
   }
 
-  // Só o que é deste aluno.
+
   const treinosAtribuidos = treinos.filter((treino) => treino.alunoId === id);
   const treinosConcluidos = historico.filter((item) => item.alunoId === id);
 

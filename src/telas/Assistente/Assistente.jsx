@@ -12,12 +12,12 @@ import { observarTreinosDoAluno } from "../../services/treinosService";
 import global from "../../styles/global";
 import styles from "./Assistente.styles";
 
-// Aviso fixo exigido pelo RF08.2.
+
 const AVISO = "As orientações da IA são informativas. Em caso de dor persistente, consulte o professor na academia.";
 
-// Assistente do aluno (RF08): tira dúvidas usando o treino escolhido como contexto (RF08.1).
+
 export default function Assistente() {
-  // Vindo dos Detalhes do treino/exercício, "treino" diz qual treino usar como contexto.
+
   const params = useLocalSearchParams();
   const [treinos, setTreinos] = useState([]);
   const [treinoId, setTreinoId] = useState(params.treino);
@@ -29,10 +29,10 @@ export default function Assistente() {
 
   useEffect(() => observarTreinosDoAluno(setTreinos), []);
 
-  // Sem id na rota (ou id que não existe mais), começa pelo treino mais recente.
+
   const treino = treinos.find((item) => item.id === treinoId) ?? treinos[0] ?? null;
 
-  // Primeira mensagem: é só visual, não vai para o Gemini.
+
   const boasVindas = {
     id: "boas-vindas",
     autor: "ia",

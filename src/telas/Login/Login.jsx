@@ -8,7 +8,7 @@ import global from "../../styles/global";
 import styles from "./Login.styles";
 import { areaDoUsuario, useUsuarioLogado } from "../../context/UsuarioLogado";
 
-// Login (RF02): entra com e-mail e senha no Firebase e leva para a área do perfil da conta.
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -32,7 +32,7 @@ export default function Login() {
     }
   }
 
-  // Se já existe alguém logado (sessão salva ou login que acabou de dar certo), vai direto para a área.
+
   if (verificando) return null;
   if (usuario) return <Redirect href={areaDoUsuario(usuario)} />;
 

@@ -1,8 +1,8 @@
 import { Pressable, Text, View } from "react-native";
 import styles from "./CartaoExercicioFeito.styles";
 
-// Exercício do treino do aluno: o quadrado marca como feito (RF16)
-// e o resto do cartão abre os detalhes do exercício.
+
+
 export function CartaoExercicioFeito({ nome, detalhe, feito, aoMarcar, onPress }) {
   return (
     <View style={styles.cartao}>

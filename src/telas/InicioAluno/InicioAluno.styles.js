@@ -17,7 +17,7 @@ export default StyleSheet.create({
     marginBottom: 20,
   },
   conteudo: {
-    paddingBottom: 100, // espaço para o botão flutuante não cobrir a dica
+    paddingBottom: 100,
   },
   secao: {
     fontSize: 18,

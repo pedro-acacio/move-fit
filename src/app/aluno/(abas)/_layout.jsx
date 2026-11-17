@@ -2,15 +2,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { colors } from "../../../styles/theme";
 
-// Ícone de cada aba: cheio quando a aba está aberta, só o contorno quando não está.
+
 function icone(nome) {
   return function IconeDaAba({ focused, color }) {
     return <Ionicons name={focused ? nome : `${nome}-outline`} size={28} color={color} />;
   };
 }
 
-// Barra inferior do aluno (protótipo: Início, Histórico, Professores, Perfil).
-// Só ícones na tela; o "title" continua sendo lido pelo leitor de tela.
+
+
 export default function AbasAluno() {
   return (
     <Tabs

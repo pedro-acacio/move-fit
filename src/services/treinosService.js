@@ -12,8 +12,8 @@ import {
 } from "firebase/firestore";
 import { auth, banco } from "./firebase";
 
-// CRUD de treinos do professor (RF06, RF06.1 a RF06.6) e leitura pelo aluno (RF15).
-// "alunoId": null = treino salvo só para o professor; com id = já enviado ao aluno (RF06.4).
+
+
 
 function colecaoTreinos() {
   return collection(banco, "treinos");
@@ -48,7 +48,7 @@ export async function buscarTreino(id) {
   return documento.exists() ? { id: documento.id, ...documento.data() } : null;
 }
 
-// Cria (sem id) ou atualiza (com id). O professorId vem da sessão, igual nos exercícios.
+
 export async function salvarTreino({ id, nome, alunoId, alunoNome, exercicios, professorNome }) {
   const dados = {
     nome,
@@ -72,7 +72,7 @@ export function excluirTreino(id) {
   return deleteDoc(doc(banco, "treinos", id));
 }
 
-// A cópia nasce sem aluno: senão o aluno receberia o treino duplicado sem ninguém pedir.
+
 export function duplicarTreino(treino) {
   return addDoc(colecaoTreinos(), {
     nome: `${treino.nome} (cópia)`,

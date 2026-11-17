@@ -9,7 +9,7 @@ import styles from "./VincularCodigo.styles";
 
 const posicoes = [0, 1, 2, 3];
 
-// Cartão para vincular aluno e professor pelo código de 4 dígitos (RF11).
+
 export function VincularCodigo({ titulo, descricao }) {
   const [codigo, setCodigo] = useState("");
   const [aviso, setAviso] = useState(null);

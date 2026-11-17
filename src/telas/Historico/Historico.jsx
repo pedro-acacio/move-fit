@@ -12,12 +12,12 @@ import {
 import global from "../../styles/global";
 import styles from "./Historico.styles";
 
-// Histórico do aluno (RF18): progresso da semana e lista dos treinos concluídos.
+
 
 export default function Historico() {
   const [historico,setHistorico] = useState([]);
 
-  // Ouve o histórico em tempo real: um treino concluído aparece aqui na hora.
+
   useEffect(() => observarHistoricoDoAluno(setHistorico), []);
 
   return (

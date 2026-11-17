@@ -1,9 +1,9 @@
 import { addDoc, collection, getDocs, onSnapshot, query, serverTimestamp, where } from "firebase/firestore";
 import { auth, banco } from "./firebase";
 
-// Vínculo aluno x professor pelo código de 4 dígitos (RF11).
-// Qualquer um dos dois pode iniciar: quem digita o código do outro cria o vínculo na hora,
-// sem etapa de confirmação separada (ainda não existe tela pra isso).
+
+
+
 
 function colecaoVinculos() {
   return collection(banco, "vinculos");
@@ -70,7 +70,7 @@ export function observarProfessoresDoAluno(aoMudar) {
   });
 }
 
-// Todos os professores cadastrados no app (aba Professores do aluno, RF19).
+
 export function observarProfessoresDaAcademia(aoMudar) {
   const consulta = query(collection(banco, "usuarios"), where("perfil", "==", "professor"));
 

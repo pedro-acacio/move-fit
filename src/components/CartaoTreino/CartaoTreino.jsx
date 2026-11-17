@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from "react-native";
 import styles from "./CartaoTreino.styles";
 
-// Cartão clicável de um treino: nome em cima, detalhe embaixo e a seta à direita.
+
 export function CartaoTreino({ titulo, detalhe, onPress }) {
   return (
     <Pressable style={styles.cartao} onPress={onPress}>

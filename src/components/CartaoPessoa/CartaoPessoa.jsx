@@ -4,8 +4,8 @@ import { SeloStatus } from "../SeloStatus/SeloStatus";
 import { useCorDaArea } from "../../context/CorDaArea";
 import styles from "./CartaoPessoa.styles";
 
-// Cartão de uma pessoa: foto, nome, detalhe e, à direita, o selo de status ou a seta.
-// "usuarioId" é o id da pessoa, usado para mostrar a foto de perfil dela.
+
+
 export function CartaoPessoa({ usuarioId, nome, detalhe, status, textoStatus, seta, semBorda, onPress }) {
     const cor = useCorDaArea();
 

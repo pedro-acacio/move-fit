@@ -1,15 +1,15 @@
-// Conversa com a API do Gemini (Google) e devolve a resposta em texto.
-// A chave fica no arquivo .env.local (que não vai para o GitHub):
-//   EXPO_PUBLIC_GEMINI_API_KEY=sua-chave
-// Depois de criar ou mudar o .env.local, reinicie o "npx expo start".
+
+
+
+
 
 const CHAVE = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
-// Se um dia der erro 404 (modelo aposentado), troque pelo Flash mais novo
-// listado em https://ai.google.dev/gemini-api/docs/models
+
+
 const MODELO = "gemini-3.5-flash-lite";
 const ENDERECO = `https://generativelanguage.googleapis.com/v1beta/models/${MODELO}:generateContent`;
 
-// Instrução fixa que diz ao Gemini quem ele é dentro do app.
+
 const INSTRUCAO =
   "Você é a assistente do MoveFit, um app de treinos de academia. " +
   "Responda sempre em português do Brasil, de forma curta, clara e motivadora. " +
@@ -17,8 +17,8 @@ const INSTRUCAO =
   "Não dê diagnóstico médico: em caso de dor ou lesão, oriente procurar um profissional. " +
   "Não use markdown (nada de asteriscos ou #), só texto simples.";
 
-// historico: lista de mensagens no formato { autor: "usuario" | "ia", texto: "..." }
-// treino: nome do treino usado como contexto das respostas (RF08.1)
+
+
 export async function perguntarGemini(historico, treino) {
   if (!CHAVE) {
     throw new Error("Chave do Gemini não configurada. Crie o arquivo .env.local com EXPO_PUBLIC_GEMINI_API_KEY.");
@@ -32,7 +32,7 @@ export async function perguntarGemini(historico, treino) {
     },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: `${INSTRUCAO} O treino atual do aluno é: ${treino}.` }] },
-      // O Gemini chama o usuário de "user" e a IA de "model".
+
       contents: historico.map((mensagem) => ({
         role: mensagem.autor === "usuario" ? "user" : "model",
         parts: [{ text: mensagem.texto }],
@@ -40,7 +40,7 @@ export async function perguntarGemini(historico, treino) {
     }),
   });
 
-  // 503 = servidores do Gemini lotados naquele momento; costuma passar rápido.
+
   if (resposta.status === 503) {
     throw new Error("A assistente está muito ocupada agora. Espere alguns segundos e tente de novo.");
   }

@@ -14,7 +14,7 @@ import styles from "./Perfil.styles";
 
 const TIPOS = { aluno: "Aluno", professor: "Professor" };
 
-// Datas do Firestore (Timestamp) no formato dd/mm/aaaa.
+
 function formatarData(timestamp) {
   const data = timestamp?.toDate?.();
   if (!data) return "Não registrado";
@@ -28,18 +28,18 @@ const AVISOS = {
   professor: "Informe este código ao aluno, ou digite o dele na aba Alunos, para criar o vínculo.",
 };
 
-// Perfil do aluno e do professor (RF14): mostra os dados de quem está logado.
-// Mostra todos os dados guardados no perfil (LGPD: o usuário tem direito de ver os próprios dados)
-// e dá acesso aos Termos de Uso e à exclusão da conta.
-// A prop "tipo" diz qual aviso mostrar embaixo do código.
+
+
+
+
 export default function Perfil({ tipo }) {
   const { usuario } = useUsuarioLogado();
   const cor = useCorDaArea();
   const [enviando, setEnviando] = useState(false);
   const [erroFoto, setErroFoto] = useState("");
 
-  // Toque na foto: escolhe uma imagem da galeria e salva no perfil.
-  // A foto nova aparece sozinha, porque o usuário logado é lido em tempo real.
+
+
   async function trocarFoto() {
     setErroFoto("");
     setEnviando(true);

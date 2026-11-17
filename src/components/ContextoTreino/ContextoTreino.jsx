@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import styles from "./ContextoTreino.styles";
 
-// Mostra o treino usado como contexto do assistente; "Alterar" abre a lista para escolher outro.
+
 export function ContextoTreino({ treinos, selecionado, aoSelecionar }) {
   const [aberto, setAberto] = useState(false);
 

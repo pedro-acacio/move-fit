@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 import styles from "./InfoPerfil.styles";
 
-// Informação só para leitura: rótulo em cima e valor dentro de uma caixa.
+
 export function InfoPerfil({ rotulo, valor }) {
   return (
     <View style={styles.container}>

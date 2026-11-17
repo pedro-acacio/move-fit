@@ -18,8 +18,8 @@ import { observarAlunosDoProfessor } from "../../services/vinculoService";
 import global from "../../styles/global";
 import styles from "./InicioProfessor.styles";
 
-// Dashboard do professor (RF12, RF13): engajamento da turma, totais e constância de cada aluno.
-// Junta os alunos vinculados com o histórico de treinos concluídos.
+
+
 export default function InicioProfessor() {
   const { usuario } = useUsuarioLogado();
   const cor = useCorDaArea();
@@ -29,7 +29,7 @@ export default function InicioProfessor() {
   useEffect(() => observarAlunosDoProfessor(setAlunos), []);
   useEffect(() => observarHistoricoDoProfessor(setHistorico), []);
 
-  // Para cada aluno, separa o histórico dele e calcula a semana e o dia de hoje.
+
   const resumo = alunos.map((aluno) => {
     const doAluno = historico.filter((item) => item.alunoId === aluno.id);
     return {
@@ -39,13 +39,13 @@ export default function InicioProfessor() {
     };
   });
 
-  // Totais (RF12).
+
   const total = resumo.length;
   const treinaramNaSemana = resumo.filter((aluno) => aluno.concluidosNaSemana > 0).length;
   const semTreinar = total - treinaramNaSemana;
   const treinaramHoje = resumo.filter((aluno) => aluno.treinouHoje).length;
 
-  // Engajamento = porcentagem de alunos que treinaram pelo menos 1 vez nesta semana.
+
   const porcentagem = total > 0 ? Math.round((treinaramNaSemana / total) * 100) : 0;
 
   function detalheDoAluno(aluno) {

@@ -8,7 +8,7 @@ import { observarProfessoresDaAcademia, observarProfessoresDoAluno } from "../..
 import global from "../../styles/global";
 import styles from "./Professores.styles";
 
-// Aba Professores do aluno (RF19): vínculo por código e listas de professores.
+
 export default function Professores() {
   const [meusProfessores, setMeusProfessores] = useState([]);
   const [professoresAcademia, setProfessoresAcademia] = useState([]);
@@ -16,7 +16,7 @@ export default function Professores() {
   useEffect(() => observarProfessoresDoAluno(setMeusProfessores), []);
   useEffect(() => observarProfessoresDaAcademia(setProfessoresAcademia), []);
 
-  // Na lista da academia, só quem ainda não é meu professor (para não aparecer duas vezes).
+
   const outrosProfessores = professoresAcademia.filter(
     (professor) => !meusProfessores.some((meu) => meu.id === professor.id)
   );

@@ -3,11 +3,11 @@ import { useCorDaArea } from "../../context/CorDaArea";
 import { colors } from "../../styles/theme";
 import styles from "./CartaoComAcoes.styles";
 
-// Cartão com título, descrição curta e os botões Editar e Excluir.
-// Usado na lista de exercícios e na de treinos. Excluir fica em vermelho (ação destrutiva).
 
 
-// "aoDuplicar" é opcional: quando vem, aparece o botão Duplicar (lista de treinos).
+
+
+
 export function CartaoComAcoes({titulo, descricao, aoEditar, aoDuplicar, aoExcluir}) {
     const cor = useCorDaArea();
 

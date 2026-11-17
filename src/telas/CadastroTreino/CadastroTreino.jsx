@@ -14,12 +14,12 @@ import { salvarTreino } from "../../services/treinosService";
 import global from "../../styles/global";
 import styles from "./CadastroTreino.styles";
 
-// Cadastro de treino (RF06, RF06.2, RF06.4): a mesma tela serve para criar e para editar.
-// Recebe "treino" (editar), "alunoId" (vindo dos Detalhes do aluno)
-// e "exercicios" (vindo de Selecionar exercícios).
+
+
+
 export default function CadastroTreino() {
   const params = useLocalSearchParams();
-  // Guardado uma vez só: os parâmetros mudam quando voltamos de Selecionar exercícios.
+
   const [original] = useState(() => (params.treino ? JSON.parse(params.treino) : null));
 
   const [nome, setNome] = useState(original?.nome ?? "");
@@ -30,14 +30,14 @@ export default function CadastroTreino() {
   const [alunosVinculados, setAlunosVinculados] = useState([]);
   const { usuario } = useUsuarioLogado();
 
-  // Só alunos já vinculados podem receber treino (RF06.4).
+
   useEffect(() => {
     return observarAlunosDoProfessor((alunos) =>
       setAlunosVinculados(alunos.map((aluno) => ({ chave: aluno.id, rotulo: aluno.nome })))
     );
   }, []);
 
-  // Junta os exercícios que voltaram de Selecionar exercícios, sem repetir.
+
   if (params.exercicios && params.exercicios !== ultimaSelecao) {
     const novos = JSON.parse(params.exercicios);
     setUltimaSelecao(params.exercicios);
@@ -51,7 +51,7 @@ export default function CadastroTreino() {
     setExercicios(exercicios.filter((item) => item.id !== id));
   }
 
-  // Salva no Firebase (RF06.5) e volta para a lista, que se atualiza sozinha pelo observador.
+
   async function salvar(enviar) {
     if (!nome.trim() || exercicios.length === 0) {
       setErro("Informe o nome e adicione pelo menos um exercício.");
@@ -62,7 +62,7 @@ export default function CadastroTreino() {
       return;
     }
 
-    // Grava o que está na tela. "Salvar e enviar" só exige que haja aluno escolhido.
+
     setErro(null);
     try {
       await salvarTreino({

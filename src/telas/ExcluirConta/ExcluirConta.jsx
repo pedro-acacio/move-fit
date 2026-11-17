@@ -13,7 +13,7 @@ import global from "../../styles/global";
 import { colors } from "../../styles/theme";
 import styles from "./ExcluirConta.styles";
 
-// O que será apagado, mostrado antes de a pessoa confirmar (precisa bater com o contaService).
+
 const O_QUE_SERA_APAGADO = {
   aluno: [
     "Seu perfil: nome, e-mail, código, foto e as datas do cadastro e do aceite dos termos.",
@@ -31,8 +31,8 @@ const O_QUE_SERA_APAGADO = {
   ],
 };
 
-// Apagar conta (LGPD, art. 18): a pessoa lê o que será apagado, marca que entendeu
-// e digita a senha. Só então o botão "Apagar minha conta" acende.
+
+
 export default function ExcluirConta() {
   const { usuario } = useUsuarioLogado();
   const [entendi, setEntendi] = useState(false);
