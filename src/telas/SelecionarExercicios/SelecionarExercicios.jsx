@@ -20,7 +20,6 @@ export default function SelecionarExercicios() {
     () =>
       listarTodosExercicios().map((exercicio) => ({
         ...exercicio,
-        nome: exercicio.nomePt,
         descricao: descricaoCurta(exercicio),
         imagens: imagensDoExercicio(exercicio),
       })),

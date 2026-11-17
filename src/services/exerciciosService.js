@@ -1,5 +1,4 @@
 import dados from "../../assets/data/exercises.json";
-import { nomesPt } from "./nomesPt";
 
 const REGIAO = {
   abdominals: "Abdômen",
@@ -50,7 +49,6 @@ function adaptar(exercicio) {
   return {
     id: exercicio.id,
     nome: exercicio.name,
-    nomePt: nomesPt[exercicio.id] ?? exercicio.name,
     grupo: REGIAO[musculoPrincipal] ?? "Outros",
     equipamento: EQUIPAMENTO[exercicio.equipment] ?? "sem equipamento",
     dificuldade: DIFICULDADE[exercicio.level] ?? exercicio.level,
@@ -81,10 +79,7 @@ export function buscarExercicios(nome) {
   const termo = nome.trim().toLowerCase();
   if (!termo) return carregarExercicios();
 
-  return carregarExercicios().filter(
-    (exercicio) =>
-      exercicio.nomePt.toLowerCase().includes(termo) || exercicio.nome.toLowerCase().includes(termo)
-  );
+  return carregarExercicios().filter((exercicio) => exercicio.nome.toLowerCase().includes(termo));
 }
 
 export function descricaoCurta(exercicio) {

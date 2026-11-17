@@ -24,12 +24,12 @@ export default function DetalhesDoExercicio() {
 
   return (
     <ScrollView style={global.tela} contentContainerStyle={styles.conteudo}>
-      <Cabecalho titulo={exercicio.nomePt} />
+      <Cabecalho titulo={exercicio.nome} />
 
       <DemonstracaoExercicio
         key={exercicio.id}
         imagens={imagensDoExercicio(exercicio)}
-        textoAlternativo={exercicio.nomePt}
+        textoAlternativo={exercicio.nome}
       />
 
       <Text style={styles.grupo}>{exercicio.grupo}</Text>

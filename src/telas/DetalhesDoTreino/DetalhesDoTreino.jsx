@@ -110,7 +110,7 @@ export default function DetalhesDoTreino() {
 
         {treino.exercicios.map((item) => {
           const exercicio = buscarExercicioPorId(item.id);
-          const nome = exercicio?.nomePt ?? item.id;
+          const nome = exercicio?.nome ?? item.id;
 
           return (
             <CartaoExercicioFeito
